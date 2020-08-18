@@ -137,11 +137,19 @@ public class GoInGameServerSystem : ComponentSystem
             Entity dash4 = DashSystem.AddAbility(player, 1, 1000, 7, new float3(-1,0,0), KeyCode.F, EntityManager, ghostCollection);
             Entity sword = SwordSystem.AddAbility(player, EntityManager, ghostCollection);
 
+
+
+#if (!UNITY_EDITOR)
+            GameObject animate_prefab = Resources.Load<GameObject>("Prefabs/character3");
+            GameObject obj = UnityEngine.Object.Instantiate(animate_prefab);
+            EntityManager.AddComponentObject(player, obj);
+#endif
+
         });
     }
 
     protected void InitializeAgent(Entity player) {
-      EntityManager.SetComponentData(player, new Speed {Value = 50});
+      EntityManager.SetComponentData(player, new Speed {Value = 22f});
       EntityManager.SetComponentData(player, new BackwardModifier {Value = 0.70f});
       EntityManager.SetComponentData(player, new GameOrientation {Value = new float2(0,1)});
       EntityManager.SetComponentData(player, new CanMove {Value = true});
@@ -152,5 +160,26 @@ public class GoInGameServerSystem : ComponentSystem
 
     }
 
+}
+
+
+// system to initialize any local structures to client when an agent is created
+[UpdateInGroup(typeof(ClientSimulationSystemGroup))]
+public class ClientObjectsInit : ComponentSystem
+{
+    protected override void OnCreate() {}
+
+    protected override void OnUpdate()
+    {
+        //Debug.LogError("in onpudate in goingamesystem");
+        Entities.WithNone<AnimationInitialized>().ForEach((Entity ent, ref AgentComponent id) =>
+        {
+            GameObject animate_prefab = Resources.Load<GameObject>("Prefabs/character3");
+            GameObject obj = UnityEngine.Object.Instantiate(animate_prefab);
+            obj.transform.localScale *= 0.5f;
+            EntityManager.AddComponentObject(ent, obj);
+            PostUpdateCommands.AddComponent<AnimationInitialized>(ent);
+        });
+    }
 }
 
