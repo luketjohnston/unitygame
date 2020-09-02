@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,21 +8,6 @@ using Unity.NetCode;
 using Unity.Transforms;
 using Unity.Rendering;
 using Unity.Mathematics;
-
-
-[GenerateAuthoringComponent]
-public struct Sword : IComponentData {
-  public float damage;
-}
-
-// THis component is added to the player that has a sword
-[GenerateAuthoringComponent]
-public struct HasSword {
-  [GhostDefaultField]
-  public Entity sword;
-}
-
-
 
 
 // update health bar prefabs with correct health
@@ -35,42 +21,40 @@ public class SwordSystem : ComponentSystem
 
     var deltaTime = Time.DeltaTime;
 
-    Entities.ForEach((ref Sword sword, ref Usable usable, ref OwningPlayer player, ref Cooldown cooldown, ref Translation trans, ref Rotation rot) => 
+    Entities.ForEach((ref Sword sword, ref Usable usable, ref OwningPlayer player, ref Cooldown cooldown) => 
     {
 
+       GameObject animatingBody = EntityManager.GetComponentObject<GameObject>(player.Value);
+       Animator anim = animatingBody.GetComponent<Animator>();
+       float speed = anim.GetFloat("StabSpeed");
+       float stabTime = Utility.AnimationLength("CharArmature|Stab", animatingBody) / speed;
+
        
+       // TODO the order of operations matters here probably?
        if (usable.inuse) {
 
+         BusyTimer busyTimer = EntityManager.GetComponentData<BusyTimer>(player.Value);
          if (cooldown.timer == cooldown.duration) {
-           // just used ability
-           // Make sword visible and 
 
-           //DestinationComponent dest = EntityManager.GetComponentData<DestinationComponent>(player.Value);
-           //CanMove canmove = EntityManager.GetComponentData<CanMove>(player.Value);
-           //dest.Valid = false; 
-           //canmove.Value = false;
-           //EntityManager.SetComponentData<DestinationComponent>(player.Value, dest);
-           //EntityManager.SetComponentData<CanMove>(player.Value, canmove);
+           // make agent unable to move, unset destination, start animation
+           DestinationComponent dest = EntityManager.GetComponentData<DestinationComponent>(player.Value);
+           dest.Valid = false; 
+           busyTimer.Value = stabTime;
+           EntityManager.SetComponentData<DestinationComponent>(player.Value, dest);
+           EntityManager.SetComponentData<BusyTimer>(player.Value, busyTimer);
+           anim.SetBool("Idle", true);
+           anim.SetBool("Stabbing", true);
          }
 
-         float swingTime = 0.12f;
-         float fullAngle = 180f;
-         float angle = fullAngle * (cooldown.duration - cooldown.timer) / swingTime;
-         if (angle > fullAngle) {
+         if (cooldown.timer > 0 && cooldown.timer < cooldown.duration - stabTime) {
+           
            usable.inuse = false;
-           // make sword invisible
-           trans.Value.x = 1000000; // make invisible TODO
-         } else {
-
-           float2 playerPos = EntityManager.GetComponentData<GamePosition>(player.Value).Value;
-           quaternion playerRot = EntityManager.GetComponentData<Rotation>(player.Value).Value;
-           float3 adjustment = new float3(-3, 1, 0);
-           rot.Value = math.mul(playerRot, quaternion.AxisAngle(new float3(0,1,0), Mathf.Deg2Rad * angle));
-           adjustment = math.mul(rot.Value, adjustment);
-           trans.Value = new float3(playerPos.x + adjustment.x, adjustment.y, playerPos.y + adjustment.z);
+           anim.SetBool("Stabbing", false);
+           anim.SetBool("Idle", true);
          }
-
        }
+
+
     });
   }
 
@@ -104,3 +88,25 @@ public class SwordSystem : ComponentSystem
   }
 
 }
+
+
+// update health bar prefabs with correct health
+// TODO: Make sure this happens after agent move update, otherwise it lags behind 
+[UpdateInGroup(typeof(ClientAndServerSimulationSystemGroup))]
+public class SwordUpdateAnimationSystem : ComponentSystem
+{
+  protected override void OnUpdate() {
+
+    Entities.ForEach((ref Sword sword, ref Usable usable, ref OwningPlayer player, ref Cooldown cooldown, ref Translation trans, ref Rotation rot) => 
+    {
+       GameObject animatingBody = EntityManager.GetComponentObject<GameObject>(player.Value);
+       if (usable.inuse) {
+         animatingBody.GetComponent<Animator>().SetBool("Idle", true);
+         animatingBody.GetComponent<Animator>().SetBool("Stabbing", true);
+       } else { 
+         animatingBody.GetComponent<Animator>().SetBool("Stabbing", false);
+       }
+    });
+  }
+}
+

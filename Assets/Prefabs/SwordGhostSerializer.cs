@@ -4,7 +4,6 @@ using Unity.Collections;
 using Unity.NetCode;
 using Unity.Physics;
 using Unity.Transforms;
-using Unity.Rendering;
 
 public struct SwordGhostSerializer : IGhostSerializer<SwordSnapshotData>
 {
@@ -31,6 +30,8 @@ public struct SwordGhostSerializer : IGhostSerializer<SwordSnapshotData>
     [NativeDisableContainerSafetyRestriction][ReadOnly] private ArchetypeChunkBufferType<LinkedEntityGroup> ghostLinkedEntityGroupType;
     [NativeDisableContainerSafetyRestriction][ReadOnly] private ComponentDataFromEntity<Rotation> ghostChild0RotationType;
     [NativeDisableContainerSafetyRestriction][ReadOnly] private ComponentDataFromEntity<Translation> ghostChild0TranslationType;
+    [NativeDisableContainerSafetyRestriction][ReadOnly] private ComponentDataFromEntity<Rotation> ghostChild1RotationType;
+    [NativeDisableContainerSafetyRestriction][ReadOnly] private ComponentDataFromEntity<Translation> ghostChild1TranslationType;
 
 
     public int CalculateImportance(ArchetypeChunk chunk)
@@ -63,6 +64,8 @@ public struct SwordGhostSerializer : IGhostSerializer<SwordSnapshotData>
         ghostLinkedEntityGroupType = system.GetArchetypeChunkBufferType<LinkedEntityGroup>(true);
         ghostChild0RotationType = system.GetComponentDataFromEntity<Rotation>(true);
         ghostChild0TranslationType = system.GetComponentDataFromEntity<Translation>(true);
+        ghostChild1RotationType = system.GetComponentDataFromEntity<Rotation>(true);
+        ghostChild1TranslationType = system.GetComponentDataFromEntity<Translation>(true);
     }
 
     public void CopyToSnapshot(ArchetypeChunk chunk, int ent, uint tick, ref SwordSnapshotData snapshot, GhostSerializerState serializerState)
@@ -80,8 +83,11 @@ public struct SwordGhostSerializer : IGhostSerializer<SwordSnapshotData>
         snapshot.SetOwningPlayerPlayerId(chunkDataOwningPlayer[ent].PlayerId, serializerState);
         snapshot.SetRotationValue(chunkDataRotation[ent].Value, serializerState);
         snapshot.SetTranslationValue(chunkDataTranslation[ent].Value, serializerState);
+        snapshot.SetUsableinuse(chunkDataUsable[ent].inuse, serializerState);
         snapshot.SetUsablecanuse(chunkDataUsable[ent].canuse, serializerState);
         snapshot.SetChild0RotationValue(ghostChild0RotationType[chunkDataLinkedEntityGroup[ent][1].Value].Value, serializerState);
         snapshot.SetChild0TranslationValue(ghostChild0TranslationType[chunkDataLinkedEntityGroup[ent][1].Value].Value, serializerState);
+        snapshot.SetChild1RotationValue(ghostChild1RotationType[chunkDataLinkedEntityGroup[ent][2].Value].Value, serializerState);
+        snapshot.SetChild1TranslationValue(ghostChild1TranslationType[chunkDataLinkedEntityGroup[ent][2].Value].Value, serializerState);
     }
 }

@@ -17,10 +17,10 @@ public class KeySystem : ComponentSystem {
     protected int usedKeys = 0;
 
     protected override void OnCreate() {
-      keys.Add(KeyCode.Q);
-      keys.Add(KeyCode.W);
-      keys.Add(KeyCode.E);
-      keys.Add(KeyCode.R);
+      keys.Add(KeyCode.Z);
+      keys.Add(KeyCode.X);
+      keys.Add(KeyCode.C);
+      keys.Add(KeyCode.V);
     }
 
 
@@ -34,18 +34,24 @@ public class KeySystem : ComponentSystem {
             }
         });
 
-        Entities.ForEach((ref KeyCodeComp key, ref OwningPlayer player, ref Dash dash) => {
-            if (player.Value == playerAgent && key.Value == KeyCode.None && dash.dir.x == 1) {
+        Entities.ForEach((ref KeyCodeComp key, ref OwningPlayer player, ref Shield shield) => {
+            if (player.Value == playerAgent && key.Value == KeyCode.None) {
               key.Value = KeyCode.S;
             }
+        });
+
+        Entities.ForEach((ref KeyCodeComp key, ref OwningPlayer player, ref Dash dash) => {
+            if (player.Value == playerAgent && key.Value == KeyCode.None && dash.dir.x == 1) {
+              key.Value = KeyCode.W;
+            }
             if (player.Value == playerAgent && key.Value == KeyCode.None && dash.dir.x == -1) {
-              key.Value = KeyCode.A;
+              key.Value = KeyCode.Q;
             }
             if (player.Value == playerAgent && key.Value == KeyCode.None && dash.dir.z == 1) {
-              key.Value = KeyCode.F;
+              key.Value = KeyCode.E;
             }
             if (player.Value == playerAgent && key.Value == KeyCode.None && dash.dir.z == -1) {
-              key.Value = KeyCode.D;
+              key.Value = KeyCode.R;
             }
         });
 

@@ -76,6 +76,9 @@ MonoBehaviour:
     server: 1
     sendDataTo: 0
     fields:
+    - name: distance_traveled
+      quantization: 1000
+      interpolate: 0
     - name: max_distance
       quantization: 1000
       interpolate: 0
@@ -145,6 +148,9 @@ MonoBehaviour:
     server: 1
     sendDataTo: 0
     fields:
+    - name: inuse
+      quantization: -1
+      interpolate: 0
     - name: canuse
       quantization: -1
       interpolate: 0

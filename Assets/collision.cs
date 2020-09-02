@@ -13,6 +13,8 @@ using Unity.Collections;
 
 
 
+/* The below is the pure ecs collisions system. Currently using hybrid approach
+ *
 [UpdateAfter(typeof(EndFramePhysicsSystem))]
 [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
 public class CollisionSystem : JobComponentSystem {
@@ -31,7 +33,6 @@ public class CollisionSystem : JobComponentSystem {
 
   protected override JobHandle OnUpdate(JobHandle inputDeps) {
 
-    Debug.Log("in my update");
 
     var job = new ApplicationJob {
       agentGroup = GetComponentDataFromEntity<AgentComponent>(),
@@ -55,7 +56,6 @@ public class CollisionSystem : JobComponentSystem {
 
     public void Execute(TriggerEvent triggerEvent) {
 
-      Debug.Log("in execute");
 
       Entity entityA = triggerEvent.EntityA;
       Entity entityB = triggerEvent.EntityB;
@@ -76,14 +76,12 @@ public class CollisionSystem : JobComponentSystem {
         modHealth.Value -= swordGroup[entityB].damage;
         healthGroup[entityA] = modHealth;
 
-        Debug.Log("Detected collicion 1");
       }
 
       if (swordGroup.HasComponent(entityA) && agentGroup.HasComponent(entityB)) {
         Health modHealth = healthGroup[entityB]; 
         modHealth.Value -= swordGroup[entityA].damage;
         healthGroup[entityB] = modHealth;
-        Debug.Log("Detected collicion 2");
         //Rotate rotate = rotateGroup[triggerEvent.Entities.EntityB];
         //rotate.radiansPerSecond = math.radians(90f);
         //rotateGroup[triggerEvent.Entities.EntityB] = rotate;
@@ -91,7 +89,66 @@ public class CollisionSystem : JobComponentSystem {
     }
   }
 }
-      
+*/
 
 
+[UpdateAfter(typeof(EndFramePhysicsSystem))]
+[UpdateInGroup(typeof(ServerSimulationSystemGroup))]
+public class CollisionSystem : ComponentSystem {
+
+  protected override void OnUpdate() {
+    Entities.ForEach((Entity ent, ref Sword sword, ref OwningPlayer player, ref Usable usable) => {
+      SwordMono swordMono = EntityManager.GetComponentObject<SwordMono>(ent);
+      ComponentDataFromEntity<Shield> shieldGroup = GetComponentDataFromEntity<Shield>();
+      ComponentDataFromEntity<BusyTimer> busyTimerGroup = GetComponentDataFromEntity<BusyTimer>();
+      ComponentDataFromEntity<FreezeTimer> freezeTimerGroup = GetComponentDataFromEntity<FreezeTimer>();
+
+      if (swordMono.stabee != Entity.Null) {
+        if (usable.inuse) {
+          if (shieldGroup.Exists(swordMono.stabee)) {
+            //GameObject playerObj = EntityManager.GetComponentObject<GameObject>(player.Value);
+            //Animator anim = playerObj.GetComponent<Animator>();
+            //anim.SetBool("Stabbing", false);
+            
+            usable.inuse = false;
+            busyTimerGroup[player.Value] = new BusyTimer{Value = 0.1f};
+            freezeTimerGroup[player.Value] = new FreezeTimer{Value = 0.1f};
+            swordMono.stabee = Entity.Null;
+          } else {
+
+          
+            //Debug.Log("detected collision!");
+            ComponentDataFromEntity<Health> healthGroup = GetComponentDataFromEntity<Health>();
+            Health modHealth = healthGroup[swordMono.stabee];
+            modHealth.Value -= sword.damage;
+            healthGroup[swordMono.stabee] = modHealth;
+          }
+        }
+      }
+    });
+  }
+
+  //protected override void OnUpdate() {
+  //  Entities.ForEach((ref Sword sword, ref OwningPlayer player) => {
+  //    GameObject obj = EntityManager.GetComponentObject<GameObject>(player.Value);
+  //    //Debug.Log(obj.name);
+  //    PlayerMono mono = obj.GetComponent<PlayerMono>();
+  //    //Debug.Log(mono);
+  //    if (mono.collision != Entity.Null) {
+  //      if (mono.collision_type == 1) {
+  //        //Debug.Log("detected collision!");
+  //        ComponentDataFromEntity<Health> healthGroup = GetComponentDataFromEntity<Health>();
+  //        Health modHealth = healthGroup[player.Value];
+  //        modHealth.Value -= sword.damage;
+  //        healthGroup[player.Value] = modHealth;
+  //      } else if (mono.collision_type == 2) {
+  //        // pass 
+  //      }
+  //    }
+  //  });
+  //}
+
+
+
+}
 

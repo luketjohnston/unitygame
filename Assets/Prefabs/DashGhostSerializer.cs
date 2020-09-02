@@ -58,6 +58,7 @@ public struct DashGhostSerializer : IGhostSerializer<DashSnapshotData>
         var chunkDataUsable = chunk.GetNativeArray(ghostUsableType);
         snapshot.SetCooldowntimer(chunkDataCooldown[ent].timer, serializerState);
         snapshot.SetCooldownduration(chunkDataCooldown[ent].duration, serializerState);
+        snapshot.SetDashdistance_traveled(chunkDataDash[ent].distance_traveled, serializerState);
         snapshot.SetDashmax_distance(chunkDataDash[ent].max_distance, serializerState);
         snapshot.SetDashspeed(chunkDataDash[ent].speed, serializerState);
         snapshot.SetDashdir(chunkDataDash[ent].dir, serializerState);
@@ -65,6 +66,7 @@ public struct DashGhostSerializer : IGhostSerializer<DashSnapshotData>
         snapshot.SetOwningPlayerPlayerId(chunkDataOwningPlayer[ent].PlayerId, serializerState);
         snapshot.SetRotationValue(chunkDataRotation[ent].Value, serializerState);
         snapshot.SetTranslationValue(chunkDataTranslation[ent].Value, serializerState);
+        snapshot.SetUsableinuse(chunkDataUsable[ent].inuse, serializerState);
         snapshot.SetUsablecanuse(chunkDataUsable[ent].canuse, serializerState);
     }
 }

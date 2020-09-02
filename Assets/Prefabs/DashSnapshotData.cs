@@ -8,6 +8,7 @@ public struct DashSnapshotData : ISnapshotData<DashSnapshotData>
     public uint tick;
     private int Cooldowntimer;
     private int Cooldownduration;
+    private int Dashdistance_traveled;
     private int Dashmax_distance;
     private int Dashspeed;
     private int DashdirX;
@@ -22,6 +23,7 @@ public struct DashSnapshotData : ISnapshotData<DashSnapshotData>
     private int TranslationValueX;
     private int TranslationValueY;
     private int TranslationValueZ;
+    private uint Usableinuse;
     private uint Usablecanuse;
     uint changeMask0;
 
@@ -57,6 +59,22 @@ public struct DashSnapshotData : ISnapshotData<DashSnapshotData>
     public void SetCooldownduration(float val)
     {
         Cooldownduration = (int)(val * 1000);
+    }
+    public float GetDashdistance_traveled(GhostDeserializerState deserializerState)
+    {
+        return Dashdistance_traveled * 0.001f;
+    }
+    public float GetDashdistance_traveled()
+    {
+        return Dashdistance_traveled * 0.001f;
+    }
+    public void SetDashdistance_traveled(float val, GhostSerializerState serializerState)
+    {
+        Dashdistance_traveled = (int)(val * 1000);
+    }
+    public void SetDashdistance_traveled(float val)
+    {
+        Dashdistance_traveled = (int)(val * 1000);
     }
     public float GetDashmax_distance(GhostDeserializerState deserializerState)
     {
@@ -185,6 +203,22 @@ public struct DashSnapshotData : ISnapshotData<DashSnapshotData>
         TranslationValueY = (int)(val.y * 100);
         TranslationValueZ = (int)(val.z * 100);
     }
+    public bool GetUsableinuse(GhostDeserializerState deserializerState)
+    {
+        return Usableinuse!=0;
+    }
+    public bool GetUsableinuse()
+    {
+        return Usableinuse!=0;
+    }
+    public void SetUsableinuse(bool val, GhostSerializerState serializerState)
+    {
+        Usableinuse = val?1u:0;
+    }
+    public void SetUsableinuse(bool val)
+    {
+        Usableinuse = val?1u:0;
+    }
     public bool GetUsablecanuse(GhostDeserializerState deserializerState)
     {
         return Usablecanuse!=0;
@@ -207,6 +241,7 @@ public struct DashSnapshotData : ISnapshotData<DashSnapshotData>
         var predictor = new GhostDeltaPredictor(tick, this.tick, baseline1.tick, baseline2.tick);
         Cooldowntimer = predictor.PredictInt(Cooldowntimer, baseline1.Cooldowntimer, baseline2.Cooldowntimer);
         Cooldownduration = predictor.PredictInt(Cooldownduration, baseline1.Cooldownduration, baseline2.Cooldownduration);
+        Dashdistance_traveled = predictor.PredictInt(Dashdistance_traveled, baseline1.Dashdistance_traveled, baseline2.Dashdistance_traveled);
         Dashmax_distance = predictor.PredictInt(Dashmax_distance, baseline1.Dashmax_distance, baseline2.Dashmax_distance);
         Dashspeed = predictor.PredictInt(Dashspeed, baseline1.Dashspeed, baseline2.Dashspeed);
         DashdirX = predictor.PredictInt(DashdirX, baseline1.DashdirX, baseline2.DashdirX);
@@ -221,6 +256,7 @@ public struct DashSnapshotData : ISnapshotData<DashSnapshotData>
         TranslationValueX = predictor.PredictInt(TranslationValueX, baseline1.TranslationValueX, baseline2.TranslationValueX);
         TranslationValueY = predictor.PredictInt(TranslationValueY, baseline1.TranslationValueY, baseline2.TranslationValueY);
         TranslationValueZ = predictor.PredictInt(TranslationValueZ, baseline1.TranslationValueZ, baseline2.TranslationValueZ);
+        Usableinuse = (uint)predictor.PredictInt((int)Usableinuse, (int)baseline1.Usableinuse, (int)baseline2.Usableinuse);
         Usablecanuse = (uint)predictor.PredictInt((int)Usablecanuse, (int)baseline1.Usablecanuse, (int)baseline2.Usablecanuse);
     }
 
@@ -228,54 +264,60 @@ public struct DashSnapshotData : ISnapshotData<DashSnapshotData>
     {
         changeMask0 = (Cooldowntimer != baseline.Cooldowntimer) ? 1u : 0;
         changeMask0 |= (Cooldownduration != baseline.Cooldownduration) ? (1u<<1) : 0;
-        changeMask0 |= (Dashmax_distance != baseline.Dashmax_distance) ? (1u<<2) : 0;
-        changeMask0 |= (Dashspeed != baseline.Dashspeed) ? (1u<<3) : 0;
+        changeMask0 |= (Dashdistance_traveled != baseline.Dashdistance_traveled) ? (1u<<2) : 0;
+        changeMask0 |= (Dashmax_distance != baseline.Dashmax_distance) ? (1u<<3) : 0;
+        changeMask0 |= (Dashspeed != baseline.Dashspeed) ? (1u<<4) : 0;
         changeMask0 |= (DashdirX != baseline.DashdirX ||
                                            DashdirY != baseline.DashdirY ||
-                                           DashdirZ != baseline.DashdirZ) ? (1u<<4) : 0;
-        changeMask0 |= (OwningPlayerValue != baseline.OwningPlayerValue) ? (1u<<5) : 0;
-        changeMask0 |= (OwningPlayerPlayerId != baseline.OwningPlayerPlayerId) ? (1u<<6) : 0;
+                                           DashdirZ != baseline.DashdirZ) ? (1u<<5) : 0;
+        changeMask0 |= (OwningPlayerValue != baseline.OwningPlayerValue) ? (1u<<6) : 0;
+        changeMask0 |= (OwningPlayerPlayerId != baseline.OwningPlayerPlayerId) ? (1u<<7) : 0;
         changeMask0 |= (RotationValueX != baseline.RotationValueX ||
                                            RotationValueY != baseline.RotationValueY ||
                                            RotationValueZ != baseline.RotationValueZ ||
-                                           RotationValueW != baseline.RotationValueW) ? (1u<<7) : 0;
+                                           RotationValueW != baseline.RotationValueW) ? (1u<<8) : 0;
         changeMask0 |= (TranslationValueX != baseline.TranslationValueX ||
                                            TranslationValueY != baseline.TranslationValueY ||
-                                           TranslationValueZ != baseline.TranslationValueZ) ? (1u<<8) : 0;
-        changeMask0 |= (Usablecanuse != baseline.Usablecanuse) ? (1u<<9) : 0;
+                                           TranslationValueZ != baseline.TranslationValueZ) ? (1u<<9) : 0;
+        changeMask0 |= (Usableinuse != baseline.Usableinuse) ? (1u<<10) : 0;
+        changeMask0 |= (Usablecanuse != baseline.Usablecanuse) ? (1u<<11) : 0;
         writer.WritePackedUIntDelta(changeMask0, baseline.changeMask0, compressionModel);
         if ((changeMask0 & (1 << 0)) != 0)
             writer.WritePackedIntDelta(Cooldowntimer, baseline.Cooldowntimer, compressionModel);
         if ((changeMask0 & (1 << 1)) != 0)
             writer.WritePackedIntDelta(Cooldownduration, baseline.Cooldownduration, compressionModel);
         if ((changeMask0 & (1 << 2)) != 0)
-            writer.WritePackedIntDelta(Dashmax_distance, baseline.Dashmax_distance, compressionModel);
+            writer.WritePackedIntDelta(Dashdistance_traveled, baseline.Dashdistance_traveled, compressionModel);
         if ((changeMask0 & (1 << 3)) != 0)
-            writer.WritePackedIntDelta(Dashspeed, baseline.Dashspeed, compressionModel);
+            writer.WritePackedIntDelta(Dashmax_distance, baseline.Dashmax_distance, compressionModel);
         if ((changeMask0 & (1 << 4)) != 0)
+            writer.WritePackedIntDelta(Dashspeed, baseline.Dashspeed, compressionModel);
+        if ((changeMask0 & (1 << 5)) != 0)
         {
             writer.WritePackedIntDelta(DashdirX, baseline.DashdirX, compressionModel);
             writer.WritePackedIntDelta(DashdirY, baseline.DashdirY, compressionModel);
             writer.WritePackedIntDelta(DashdirZ, baseline.DashdirZ, compressionModel);
         }
-        if ((changeMask0 & (1 << 5)) != 0)
-            writer.WritePackedIntDelta(OwningPlayerValue, baseline.OwningPlayerValue, compressionModel);
         if ((changeMask0 & (1 << 6)) != 0)
-            writer.WritePackedIntDelta(OwningPlayerPlayerId, baseline.OwningPlayerPlayerId, compressionModel);
+            writer.WritePackedIntDelta(OwningPlayerValue, baseline.OwningPlayerValue, compressionModel);
         if ((changeMask0 & (1 << 7)) != 0)
+            writer.WritePackedIntDelta(OwningPlayerPlayerId, baseline.OwningPlayerPlayerId, compressionModel);
+        if ((changeMask0 & (1 << 8)) != 0)
         {
             writer.WritePackedIntDelta(RotationValueX, baseline.RotationValueX, compressionModel);
             writer.WritePackedIntDelta(RotationValueY, baseline.RotationValueY, compressionModel);
             writer.WritePackedIntDelta(RotationValueZ, baseline.RotationValueZ, compressionModel);
             writer.WritePackedIntDelta(RotationValueW, baseline.RotationValueW, compressionModel);
         }
-        if ((changeMask0 & (1 << 8)) != 0)
+        if ((changeMask0 & (1 << 9)) != 0)
         {
             writer.WritePackedIntDelta(TranslationValueX, baseline.TranslationValueX, compressionModel);
             writer.WritePackedIntDelta(TranslationValueY, baseline.TranslationValueY, compressionModel);
             writer.WritePackedIntDelta(TranslationValueZ, baseline.TranslationValueZ, compressionModel);
         }
-        if ((changeMask0 & (1 << 9)) != 0)
+        if ((changeMask0 & (1 << 10)) != 0)
+            writer.WritePackedUIntDelta(Usableinuse, baseline.Usableinuse, compressionModel);
+        if ((changeMask0 & (1 << 11)) != 0)
             writer.WritePackedUIntDelta(Usablecanuse, baseline.Usablecanuse, compressionModel);
     }
 
@@ -293,14 +335,18 @@ public struct DashSnapshotData : ISnapshotData<DashSnapshotData>
         else
             Cooldownduration = baseline.Cooldownduration;
         if ((changeMask0 & (1 << 2)) != 0)
+            Dashdistance_traveled = reader.ReadPackedIntDelta(baseline.Dashdistance_traveled, compressionModel);
+        else
+            Dashdistance_traveled = baseline.Dashdistance_traveled;
+        if ((changeMask0 & (1 << 3)) != 0)
             Dashmax_distance = reader.ReadPackedIntDelta(baseline.Dashmax_distance, compressionModel);
         else
             Dashmax_distance = baseline.Dashmax_distance;
-        if ((changeMask0 & (1 << 3)) != 0)
+        if ((changeMask0 & (1 << 4)) != 0)
             Dashspeed = reader.ReadPackedIntDelta(baseline.Dashspeed, compressionModel);
         else
             Dashspeed = baseline.Dashspeed;
-        if ((changeMask0 & (1 << 4)) != 0)
+        if ((changeMask0 & (1 << 5)) != 0)
         {
             DashdirX = reader.ReadPackedIntDelta(baseline.DashdirX, compressionModel);
             DashdirY = reader.ReadPackedIntDelta(baseline.DashdirY, compressionModel);
@@ -312,15 +358,15 @@ public struct DashSnapshotData : ISnapshotData<DashSnapshotData>
             DashdirY = baseline.DashdirY;
             DashdirZ = baseline.DashdirZ;
         }
-        if ((changeMask0 & (1 << 5)) != 0)
+        if ((changeMask0 & (1 << 6)) != 0)
             OwningPlayerValue = reader.ReadPackedIntDelta(baseline.OwningPlayerValue, compressionModel);
         else
             OwningPlayerValue = baseline.OwningPlayerValue;
-        if ((changeMask0 & (1 << 6)) != 0)
+        if ((changeMask0 & (1 << 7)) != 0)
             OwningPlayerPlayerId = reader.ReadPackedIntDelta(baseline.OwningPlayerPlayerId, compressionModel);
         else
             OwningPlayerPlayerId = baseline.OwningPlayerPlayerId;
-        if ((changeMask0 & (1 << 7)) != 0)
+        if ((changeMask0 & (1 << 8)) != 0)
         {
             RotationValueX = reader.ReadPackedIntDelta(baseline.RotationValueX, compressionModel);
             RotationValueY = reader.ReadPackedIntDelta(baseline.RotationValueY, compressionModel);
@@ -334,7 +380,7 @@ public struct DashSnapshotData : ISnapshotData<DashSnapshotData>
             RotationValueZ = baseline.RotationValueZ;
             RotationValueW = baseline.RotationValueW;
         }
-        if ((changeMask0 & (1 << 8)) != 0)
+        if ((changeMask0 & (1 << 9)) != 0)
         {
             TranslationValueX = reader.ReadPackedIntDelta(baseline.TranslationValueX, compressionModel);
             TranslationValueY = reader.ReadPackedIntDelta(baseline.TranslationValueY, compressionModel);
@@ -346,7 +392,11 @@ public struct DashSnapshotData : ISnapshotData<DashSnapshotData>
             TranslationValueY = baseline.TranslationValueY;
             TranslationValueZ = baseline.TranslationValueZ;
         }
-        if ((changeMask0 & (1 << 9)) != 0)
+        if ((changeMask0 & (1 << 10)) != 0)
+            Usableinuse = reader.ReadPackedUIntDelta(baseline.Usableinuse, compressionModel);
+        else
+            Usableinuse = baseline.Usableinuse;
+        if ((changeMask0 & (1 << 11)) != 0)
             Usablecanuse = reader.ReadPackedUIntDelta(baseline.Usablecanuse, compressionModel);
         else
             Usablecanuse = baseline.Usablecanuse;

@@ -22,4 +22,23 @@ public static class Utility {
   public static float3 v3tof3(Vector3 v) {
     return new float3(v.x, v.y, v.z);
   }
+
+  public static float2 v3tof2(Vector3 v) {
+    return new float2(v.x, v.z);
+  }
+
+
+  public static float AnimationLength(string animationName, GameObject animatingBody) {
+    Animator anim = animatingBody.GetComponent<Animator>();
+    RuntimeAnimatorController ac = anim.runtimeAnimatorController;
+    for (int i = 0; i < ac.animationClips.Length; i++) {
+      if (ac.animationClips[i].name == animationName) {
+        return ac.animationClips[i].length;
+      }
+    }
+    throw new System.ArgumentException("AnimationLength could not find animation " + animationName);
+  }
 }
+
+
+

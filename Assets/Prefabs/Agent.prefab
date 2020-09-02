@@ -18,10 +18,12 @@ GameObject:
   - component: {fileID: 5915438036544866162}
   - component: {fileID: -205150707227991758}
   - component: {fileID: 2508054542739360332}
-  - component: {fileID: 8769151300992908047}
   - component: {fileID: 4111549310961582421}
   - component: {fileID: 5749330713664399225}
   - component: {fileID: 7742734594558767858}
+  - component: {fileID: -1555144976262113397}
+  - component: {fileID: -9049868424614266710}
+  - component: {fileID: -2366241741564461261}
   m_Layer: 0
   m_Name: Agent
   m_TagString: Untagged
@@ -58,6 +60,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,6 +85,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &1734223496918129916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,14 +141,14 @@ MonoBehaviour:
       interpolate: 0
     manualFieldList: 0
     entityIndex: 0
-  - name: CanMove
+  - name: BusyTimer
     interpolatedClient: 1
     predictedClient: 1
     server: 1
     sendDataTo: 0
     fields:
     - name: Value
-      quantization: -1
+      quantization: 1000
       interpolate: 0
     manualFieldList: 0
     entityIndex: 0
@@ -159,6 +163,17 @@ MonoBehaviour:
       interpolate: 0
     - name: Valid
       quantization: -1
+      interpolate: 0
+    manualFieldList: 0
+    entityIndex: 0
+  - name: FreezeTimer
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields:
+    - name: Value
+      quantization: 1000
       interpolate: 0
     manualFieldList: 0
     entityIndex: 0
@@ -198,6 +213,17 @@ MonoBehaviour:
       interpolate: 0
     - name: max
       quantization: 1000
+      interpolate: 0
+    manualFieldList: 0
+    entityIndex: 0
+  - name: Rotating
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields:
+    - name: Value
+      quantization: -1
       interpolate: 0
     manualFieldList: 0
     entityIndex: 0
@@ -369,19 +395,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: faa8d50d5c0ba654e9a05d7c6b80a329, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Value: 0
---- !u!114 &8769151300992908047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2849867011457940102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f7be2c04e01b8345876eb68b47f54ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Value: 0
@@ -609,3 +622,42 @@ MonoBehaviour:
     Tag05: 0
     Tag06: 0
     Tag07: 0
+--- !u!114 &-1555144976262113397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2849867011457940102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bceab15774a00314d90767b20fed12a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value: 0
+--- !u!114 &-9049868424614266710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2849867011457940102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbcf9e4c9dc87c7498b4da100c77130f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value: 0
+--- !u!114 &-2366241741564461261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2849867011457940102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e76f1b99e8de5419d74a46f177dfc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value: 0

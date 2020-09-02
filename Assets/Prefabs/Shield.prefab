@@ -1,0 +1,239 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &574357354107678384
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3973209478287712100}
+  - component: {fileID: 82612068830514429}
+  - component: {fileID: -3349470552636179389}
+  - component: {fileID: -1189856670153948463}
+  - component: {fileID: -3775296550983344910}
+  - component: {fileID: 5674950717687095214}
+  - component: {fileID: -3979505572172569130}
+  - component: {fileID: 1613950648097179535}
+  m_Layer: 0
+  m_Name: Shield
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3973209478287712100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574357354107678384}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -18.715408, y: -22.594017, z: -91.29282}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &82612068830514429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574357354107678384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c980424e323b6c4d84cc47d733170b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inuse: 0
+  canuse: 0
+--- !u!114 &-3349470552636179389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574357354107678384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c79d771cedb4794bf100ce60df5f764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultClientInstantiationType: 2
+  RootPath: 
+  SnapshotDataPath: ShieldSnapshotData.cs
+  UpdateSystemPath: ShieldGhostUpdateSystem.cs
+  SerializerPath: ShieldGhostSerializer.cs
+  Importance: 1
+  PredictingPlayerNetworkId: AngleInput.Value
+  Components:
+  - name: AngleInput
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields:
+    - name: Value
+      quantization: 1000
+      interpolate: 0
+    manualFieldList: 0
+    entityIndex: 0
+  - name: KeyCodeComp
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields: []
+    manualFieldList: 0
+    entityIndex: 0
+  - name: OwningPlayer
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields:
+    - name: Value
+      quantization: -1
+      interpolate: 0
+    - name: PlayerId
+      quantization: -1
+      interpolate: 0
+    manualFieldList: 0
+    entityIndex: 0
+  - name: Releasable
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields:
+    - name: released
+      quantization: -1
+      interpolate: 0
+    manualFieldList: 0
+    entityIndex: 0
+  - name: Shield
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields: []
+    manualFieldList: 0
+    entityIndex: 0
+  - name: Unity.Transforms.LocalToWorld
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields: []
+    manualFieldList: 0
+    entityIndex: 0
+  - name: Unity.Transforms.Rotation
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields:
+    - name: Value
+      quantization: 1000
+      interpolate: 1
+    manualFieldList: 0
+    entityIndex: 0
+  - name: Unity.Transforms.Translation
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields:
+    - name: Value
+      quantization: 100
+      interpolate: 1
+    manualFieldList: 0
+    entityIndex: 0
+  - name: Usable
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields:
+    - name: inuse
+      quantization: -1
+      interpolate: 0
+    - name: canuse
+      quantization: -1
+      interpolate: 0
+    manualFieldList: 0
+    entityIndex: 0
+  prefabId: cdaee7a2fd12d9248803b2f0fcc72c12
+  Name: Shield
+  doNotStrip: 0
+--- !u!114 &-1189856670153948463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574357354107678384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb1b57c43f355d4e9394fe72a491075, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value: 0
+--- !u!114 &-3775296550983344910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574357354107678384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca994e1722455e8449dd5f6346868645, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value: {fileID: 0}
+  PlayerId: 0
+--- !u!114 &5674950717687095214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574357354107678384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77b19a29196d18d4193c5b5045db7971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strength: 0
+  damage: 0
+--- !u!114 &-3979505572172569130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574357354107678384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20be6e8c616fa50458e24fa9415aff2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value: 0
+--- !u!114 &1613950648097179535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574357354107678384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39c66856c6d652d4db4fac55cb42e87b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  released: 0

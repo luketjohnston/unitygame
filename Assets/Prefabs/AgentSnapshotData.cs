@@ -7,10 +7,11 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
     public uint tick;
     private int AgentComponentPlayerId;
     private int BackwardModifierValue;
-    private uint CanMoveValue;
+    private int BusyTimerValue;
     private int DestinationComponentValueX;
     private int DestinationComponentValueY;
     private uint DestinationComponentValid;
+    private int FreezeTimerValue;
     private int GameOrientationValueX;
     private int GameOrientationValueY;
     private int GamePositionValueX;
@@ -18,6 +19,7 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
     private int HealthValue;
     private int Healthregen;
     private int Healthmax;
+    private int RotatingValue;
     private int SpeedValue;
     private int RotationValueX;
     private int RotationValueY;
@@ -61,21 +63,21 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
     {
         BackwardModifierValue = (int)(val * 1000);
     }
-    public bool GetCanMoveValue(GhostDeserializerState deserializerState)
+    public float GetBusyTimerValue(GhostDeserializerState deserializerState)
     {
-        return CanMoveValue!=0;
+        return BusyTimerValue * 0.001f;
     }
-    public bool GetCanMoveValue()
+    public float GetBusyTimerValue()
     {
-        return CanMoveValue!=0;
+        return BusyTimerValue * 0.001f;
     }
-    public void SetCanMoveValue(bool val, GhostSerializerState serializerState)
+    public void SetBusyTimerValue(float val, GhostSerializerState serializerState)
     {
-        CanMoveValue = val?1u:0;
+        BusyTimerValue = (int)(val * 1000);
     }
-    public void SetCanMoveValue(bool val)
+    public void SetBusyTimerValue(float val)
     {
-        CanMoveValue = val?1u:0;
+        BusyTimerValue = (int)(val * 1000);
     }
     public float2 GetDestinationComponentValue(GhostDeserializerState deserializerState)
     {
@@ -109,6 +111,22 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
     public void SetDestinationComponentValid(bool val)
     {
         DestinationComponentValid = val?1u:0;
+    }
+    public float GetFreezeTimerValue(GhostDeserializerState deserializerState)
+    {
+        return FreezeTimerValue * 0.001f;
+    }
+    public float GetFreezeTimerValue()
+    {
+        return FreezeTimerValue * 0.001f;
+    }
+    public void SetFreezeTimerValue(float val, GhostSerializerState serializerState)
+    {
+        FreezeTimerValue = (int)(val * 1000);
+    }
+    public void SetFreezeTimerValue(float val)
+    {
+        FreezeTimerValue = (int)(val * 1000);
     }
     public float2 GetGameOrientationValue(GhostDeserializerState deserializerState)
     {
@@ -192,6 +210,22 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
     {
         Healthmax = (int)(val * 1000);
     }
+    public int GetRotatingValue(GhostDeserializerState deserializerState)
+    {
+        return (int)RotatingValue;
+    }
+    public int GetRotatingValue()
+    {
+        return (int)RotatingValue;
+    }
+    public void SetRotatingValue(int val, GhostSerializerState serializerState)
+    {
+        RotatingValue = (int)val;
+    }
+    public void SetRotatingValue(int val)
+    {
+        RotatingValue = (int)val;
+    }
     public float GetSpeedValue(GhostDeserializerState deserializerState)
     {
         return SpeedValue * 0.001f;
@@ -251,10 +285,11 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
         var predictor = new GhostDeltaPredictor(tick, this.tick, baseline1.tick, baseline2.tick);
         AgentComponentPlayerId = predictor.PredictInt(AgentComponentPlayerId, baseline1.AgentComponentPlayerId, baseline2.AgentComponentPlayerId);
         BackwardModifierValue = predictor.PredictInt(BackwardModifierValue, baseline1.BackwardModifierValue, baseline2.BackwardModifierValue);
-        CanMoveValue = (uint)predictor.PredictInt((int)CanMoveValue, (int)baseline1.CanMoveValue, (int)baseline2.CanMoveValue);
+        BusyTimerValue = predictor.PredictInt(BusyTimerValue, baseline1.BusyTimerValue, baseline2.BusyTimerValue);
         DestinationComponentValueX = predictor.PredictInt(DestinationComponentValueX, baseline1.DestinationComponentValueX, baseline2.DestinationComponentValueX);
         DestinationComponentValueY = predictor.PredictInt(DestinationComponentValueY, baseline1.DestinationComponentValueY, baseline2.DestinationComponentValueY);
         DestinationComponentValid = (uint)predictor.PredictInt((int)DestinationComponentValid, (int)baseline1.DestinationComponentValid, (int)baseline2.DestinationComponentValid);
+        FreezeTimerValue = predictor.PredictInt(FreezeTimerValue, baseline1.FreezeTimerValue, baseline2.FreezeTimerValue);
         GameOrientationValueX = predictor.PredictInt(GameOrientationValueX, baseline1.GameOrientationValueX, baseline2.GameOrientationValueX);
         GameOrientationValueY = predictor.PredictInt(GameOrientationValueY, baseline1.GameOrientationValueY, baseline2.GameOrientationValueY);
         GamePositionValueX = predictor.PredictInt(GamePositionValueX, baseline1.GamePositionValueX, baseline2.GamePositionValueX);
@@ -262,6 +297,7 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
         HealthValue = predictor.PredictInt(HealthValue, baseline1.HealthValue, baseline2.HealthValue);
         Healthregen = predictor.PredictInt(Healthregen, baseline1.Healthregen, baseline2.Healthregen);
         Healthmax = predictor.PredictInt(Healthmax, baseline1.Healthmax, baseline2.Healthmax);
+        RotatingValue = predictor.PredictInt(RotatingValue, baseline1.RotatingValue, baseline2.RotatingValue);
         SpeedValue = predictor.PredictInt(SpeedValue, baseline1.SpeedValue, baseline2.SpeedValue);
         RotationValueX = predictor.PredictInt(RotationValueX, baseline1.RotationValueX, baseline2.RotationValueX);
         RotationValueY = predictor.PredictInt(RotationValueY, baseline1.RotationValueY, baseline2.RotationValueY);
@@ -276,32 +312,34 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
     {
         changeMask0 = (AgentComponentPlayerId != baseline.AgentComponentPlayerId) ? 1u : 0;
         changeMask0 |= (BackwardModifierValue != baseline.BackwardModifierValue) ? (1u<<1) : 0;
-        changeMask0 |= (CanMoveValue != baseline.CanMoveValue) ? (1u<<2) : 0;
+        changeMask0 |= (BusyTimerValue != baseline.BusyTimerValue) ? (1u<<2) : 0;
         changeMask0 |= (DestinationComponentValueX != baseline.DestinationComponentValueX ||
                                            DestinationComponentValueY != baseline.DestinationComponentValueY) ? (1u<<3) : 0;
         changeMask0 |= (DestinationComponentValid != baseline.DestinationComponentValid) ? (1u<<4) : 0;
+        changeMask0 |= (FreezeTimerValue != baseline.FreezeTimerValue) ? (1u<<5) : 0;
         changeMask0 |= (GameOrientationValueX != baseline.GameOrientationValueX ||
-                                           GameOrientationValueY != baseline.GameOrientationValueY) ? (1u<<5) : 0;
+                                           GameOrientationValueY != baseline.GameOrientationValueY) ? (1u<<6) : 0;
         changeMask0 |= (GamePositionValueX != baseline.GamePositionValueX ||
-                                           GamePositionValueY != baseline.GamePositionValueY) ? (1u<<6) : 0;
-        changeMask0 |= (HealthValue != baseline.HealthValue) ? (1u<<7) : 0;
-        changeMask0 |= (Healthregen != baseline.Healthregen) ? (1u<<8) : 0;
-        changeMask0 |= (Healthmax != baseline.Healthmax) ? (1u<<9) : 0;
-        changeMask0 |= (SpeedValue != baseline.SpeedValue) ? (1u<<10) : 0;
+                                           GamePositionValueY != baseline.GamePositionValueY) ? (1u<<7) : 0;
+        changeMask0 |= (HealthValue != baseline.HealthValue) ? (1u<<8) : 0;
+        changeMask0 |= (Healthregen != baseline.Healthregen) ? (1u<<9) : 0;
+        changeMask0 |= (Healthmax != baseline.Healthmax) ? (1u<<10) : 0;
+        changeMask0 |= (RotatingValue != baseline.RotatingValue) ? (1u<<11) : 0;
+        changeMask0 |= (SpeedValue != baseline.SpeedValue) ? (1u<<12) : 0;
         changeMask0 |= (RotationValueX != baseline.RotationValueX ||
                                            RotationValueY != baseline.RotationValueY ||
                                            RotationValueZ != baseline.RotationValueZ ||
-                                           RotationValueW != baseline.RotationValueW) ? (1u<<11) : 0;
+                                           RotationValueW != baseline.RotationValueW) ? (1u<<13) : 0;
         changeMask0 |= (TranslationValueX != baseline.TranslationValueX ||
                                            TranslationValueY != baseline.TranslationValueY ||
-                                           TranslationValueZ != baseline.TranslationValueZ) ? (1u<<12) : 0;
+                                           TranslationValueZ != baseline.TranslationValueZ) ? (1u<<14) : 0;
         writer.WritePackedUIntDelta(changeMask0, baseline.changeMask0, compressionModel);
         if ((changeMask0 & (1 << 0)) != 0)
             writer.WritePackedIntDelta(AgentComponentPlayerId, baseline.AgentComponentPlayerId, compressionModel);
         if ((changeMask0 & (1 << 1)) != 0)
             writer.WritePackedIntDelta(BackwardModifierValue, baseline.BackwardModifierValue, compressionModel);
         if ((changeMask0 & (1 << 2)) != 0)
-            writer.WritePackedUIntDelta(CanMoveValue, baseline.CanMoveValue, compressionModel);
+            writer.WritePackedIntDelta(BusyTimerValue, baseline.BusyTimerValue, compressionModel);
         if ((changeMask0 & (1 << 3)) != 0)
         {
             writer.WritePackedIntDelta(DestinationComponentValueX, baseline.DestinationComponentValueX, compressionModel);
@@ -310,31 +348,35 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
         if ((changeMask0 & (1 << 4)) != 0)
             writer.WritePackedUIntDelta(DestinationComponentValid, baseline.DestinationComponentValid, compressionModel);
         if ((changeMask0 & (1 << 5)) != 0)
+            writer.WritePackedIntDelta(FreezeTimerValue, baseline.FreezeTimerValue, compressionModel);
+        if ((changeMask0 & (1 << 6)) != 0)
         {
             writer.WritePackedIntDelta(GameOrientationValueX, baseline.GameOrientationValueX, compressionModel);
             writer.WritePackedIntDelta(GameOrientationValueY, baseline.GameOrientationValueY, compressionModel);
         }
-        if ((changeMask0 & (1 << 6)) != 0)
+        if ((changeMask0 & (1 << 7)) != 0)
         {
             writer.WritePackedIntDelta(GamePositionValueX, baseline.GamePositionValueX, compressionModel);
             writer.WritePackedIntDelta(GamePositionValueY, baseline.GamePositionValueY, compressionModel);
         }
-        if ((changeMask0 & (1 << 7)) != 0)
-            writer.WritePackedIntDelta(HealthValue, baseline.HealthValue, compressionModel);
         if ((changeMask0 & (1 << 8)) != 0)
-            writer.WritePackedIntDelta(Healthregen, baseline.Healthregen, compressionModel);
+            writer.WritePackedIntDelta(HealthValue, baseline.HealthValue, compressionModel);
         if ((changeMask0 & (1 << 9)) != 0)
-            writer.WritePackedIntDelta(Healthmax, baseline.Healthmax, compressionModel);
+            writer.WritePackedIntDelta(Healthregen, baseline.Healthregen, compressionModel);
         if ((changeMask0 & (1 << 10)) != 0)
-            writer.WritePackedIntDelta(SpeedValue, baseline.SpeedValue, compressionModel);
+            writer.WritePackedIntDelta(Healthmax, baseline.Healthmax, compressionModel);
         if ((changeMask0 & (1 << 11)) != 0)
+            writer.WritePackedIntDelta(RotatingValue, baseline.RotatingValue, compressionModel);
+        if ((changeMask0 & (1 << 12)) != 0)
+            writer.WritePackedIntDelta(SpeedValue, baseline.SpeedValue, compressionModel);
+        if ((changeMask0 & (1 << 13)) != 0)
         {
             writer.WritePackedIntDelta(RotationValueX, baseline.RotationValueX, compressionModel);
             writer.WritePackedIntDelta(RotationValueY, baseline.RotationValueY, compressionModel);
             writer.WritePackedIntDelta(RotationValueZ, baseline.RotationValueZ, compressionModel);
             writer.WritePackedIntDelta(RotationValueW, baseline.RotationValueW, compressionModel);
         }
-        if ((changeMask0 & (1 << 12)) != 0)
+        if ((changeMask0 & (1 << 14)) != 0)
         {
             writer.WritePackedIntDelta(TranslationValueX, baseline.TranslationValueX, compressionModel);
             writer.WritePackedIntDelta(TranslationValueY, baseline.TranslationValueY, compressionModel);
@@ -356,9 +398,9 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
         else
             BackwardModifierValue = baseline.BackwardModifierValue;
         if ((changeMask0 & (1 << 2)) != 0)
-            CanMoveValue = reader.ReadPackedUIntDelta(baseline.CanMoveValue, compressionModel);
+            BusyTimerValue = reader.ReadPackedIntDelta(baseline.BusyTimerValue, compressionModel);
         else
-            CanMoveValue = baseline.CanMoveValue;
+            BusyTimerValue = baseline.BusyTimerValue;
         if ((changeMask0 & (1 << 3)) != 0)
         {
             DestinationComponentValueX = reader.ReadPackedIntDelta(baseline.DestinationComponentValueX, compressionModel);
@@ -374,6 +416,10 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
         else
             DestinationComponentValid = baseline.DestinationComponentValid;
         if ((changeMask0 & (1 << 5)) != 0)
+            FreezeTimerValue = reader.ReadPackedIntDelta(baseline.FreezeTimerValue, compressionModel);
+        else
+            FreezeTimerValue = baseline.FreezeTimerValue;
+        if ((changeMask0 & (1 << 6)) != 0)
         {
             GameOrientationValueX = reader.ReadPackedIntDelta(baseline.GameOrientationValueX, compressionModel);
             GameOrientationValueY = reader.ReadPackedIntDelta(baseline.GameOrientationValueY, compressionModel);
@@ -383,7 +429,7 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
             GameOrientationValueX = baseline.GameOrientationValueX;
             GameOrientationValueY = baseline.GameOrientationValueY;
         }
-        if ((changeMask0 & (1 << 6)) != 0)
+        if ((changeMask0 & (1 << 7)) != 0)
         {
             GamePositionValueX = reader.ReadPackedIntDelta(baseline.GamePositionValueX, compressionModel);
             GamePositionValueY = reader.ReadPackedIntDelta(baseline.GamePositionValueY, compressionModel);
@@ -393,23 +439,27 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
             GamePositionValueX = baseline.GamePositionValueX;
             GamePositionValueY = baseline.GamePositionValueY;
         }
-        if ((changeMask0 & (1 << 7)) != 0)
+        if ((changeMask0 & (1 << 8)) != 0)
             HealthValue = reader.ReadPackedIntDelta(baseline.HealthValue, compressionModel);
         else
             HealthValue = baseline.HealthValue;
-        if ((changeMask0 & (1 << 8)) != 0)
+        if ((changeMask0 & (1 << 9)) != 0)
             Healthregen = reader.ReadPackedIntDelta(baseline.Healthregen, compressionModel);
         else
             Healthregen = baseline.Healthregen;
-        if ((changeMask0 & (1 << 9)) != 0)
+        if ((changeMask0 & (1 << 10)) != 0)
             Healthmax = reader.ReadPackedIntDelta(baseline.Healthmax, compressionModel);
         else
             Healthmax = baseline.Healthmax;
-        if ((changeMask0 & (1 << 10)) != 0)
+        if ((changeMask0 & (1 << 11)) != 0)
+            RotatingValue = reader.ReadPackedIntDelta(baseline.RotatingValue, compressionModel);
+        else
+            RotatingValue = baseline.RotatingValue;
+        if ((changeMask0 & (1 << 12)) != 0)
             SpeedValue = reader.ReadPackedIntDelta(baseline.SpeedValue, compressionModel);
         else
             SpeedValue = baseline.SpeedValue;
-        if ((changeMask0 & (1 << 11)) != 0)
+        if ((changeMask0 & (1 << 13)) != 0)
         {
             RotationValueX = reader.ReadPackedIntDelta(baseline.RotationValueX, compressionModel);
             RotationValueY = reader.ReadPackedIntDelta(baseline.RotationValueY, compressionModel);
@@ -423,7 +473,7 @@ public struct AgentSnapshotData : ISnapshotData<AgentSnapshotData>
             RotationValueZ = baseline.RotationValueZ;
             RotationValueW = baseline.RotationValueW;
         }
-        if ((changeMask0 & (1 << 12)) != 0)
+        if ((changeMask0 & (1 << 14)) != 0)
         {
             TranslationValueX = reader.ReadPackedIntDelta(baseline.TranslationValueX, compressionModel);
             TranslationValueY = reader.ReadPackedIntDelta(baseline.TranslationValueY, compressionModel);

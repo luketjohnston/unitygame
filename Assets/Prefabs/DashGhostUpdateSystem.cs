@@ -76,6 +76,7 @@ public class DashGhostUpdateSystem : JobComponentSystem
                 var ghostUsable = ghostUsableArray[entityIndex];
                 ghostCooldown.timer = snapshotData.GetCooldowntimer(deserializerState);
                 ghostCooldown.duration = snapshotData.GetCooldownduration(deserializerState);
+                ghostDash.distance_traveled = snapshotData.GetDashdistance_traveled(deserializerState);
                 ghostDash.max_distance = snapshotData.GetDashmax_distance(deserializerState);
                 ghostDash.speed = snapshotData.GetDashspeed(deserializerState);
                 ghostDash.dir = snapshotData.GetDashdir(deserializerState);
@@ -83,6 +84,7 @@ public class DashGhostUpdateSystem : JobComponentSystem
                 ghostOwningPlayer.PlayerId = snapshotData.GetOwningPlayerPlayerId(deserializerState);
                 ghostRotation.Value = snapshotData.GetRotationValue(deserializerState);
                 ghostTranslation.Value = snapshotData.GetTranslationValue(deserializerState);
+                ghostUsable.inuse = snapshotData.GetUsableinuse(deserializerState);
                 ghostUsable.canuse = snapshotData.GetUsablecanuse(deserializerState);
                 ghostCooldownArray[entityIndex] = ghostCooldown;
                 ghostDashArray[entityIndex] = ghostDash;
@@ -170,6 +172,7 @@ public class DashGhostUpdateSystem : JobComponentSystem
                 var ghostUsable = ghostUsableArray[entityIndex];
                 ghostCooldown.timer = snapshotData.GetCooldowntimer(deserializerState);
                 ghostCooldown.duration = snapshotData.GetCooldownduration(deserializerState);
+                ghostDash.distance_traveled = snapshotData.GetDashdistance_traveled(deserializerState);
                 ghostDash.max_distance = snapshotData.GetDashmax_distance(deserializerState);
                 ghostDash.speed = snapshotData.GetDashspeed(deserializerState);
                 ghostDash.dir = snapshotData.GetDashdir(deserializerState);
@@ -177,6 +180,7 @@ public class DashGhostUpdateSystem : JobComponentSystem
                 ghostOwningPlayer.PlayerId = snapshotData.GetOwningPlayerPlayerId(deserializerState);
                 ghostRotation.Value = snapshotData.GetRotationValue(deserializerState);
                 ghostTranslation.Value = snapshotData.GetTranslationValue(deserializerState);
+                ghostUsable.inuse = snapshotData.GetUsableinuse(deserializerState);
                 ghostUsable.canuse = snapshotData.GetUsablecanuse(deserializerState);
                 ghostCooldownArray[entityIndex] = ghostCooldown;
                 ghostDashArray[entityIndex] = ghostDash;

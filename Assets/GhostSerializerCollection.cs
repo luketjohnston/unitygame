@@ -14,11 +14,12 @@ public struct NetAgentGhostSerializerCollection : IGhostSerializerCollection
             "AgentGhostSerializer",
             "DashGhostSerializer",
             "SwordGhostSerializer",
+            "ShieldGhostSerializer",
         };
         return arr;
     }
 
-    public int Length => 3;
+    public int Length => 4;
 #endif
     public static int FindGhostType<T>()
         where T : struct, ISnapshotData<T>
@@ -29,6 +30,8 @@ public struct NetAgentGhostSerializerCollection : IGhostSerializerCollection
             return 1;
         if (typeof(T) == typeof(SwordSnapshotData))
             return 2;
+        if (typeof(T) == typeof(ShieldSnapshotData))
+            return 3;
         return -1;
     }
 
@@ -37,6 +40,7 @@ public struct NetAgentGhostSerializerCollection : IGhostSerializerCollection
         m_AgentGhostSerializer.BeginSerialize(system);
         m_DashGhostSerializer.BeginSerialize(system);
         m_SwordGhostSerializer.BeginSerialize(system);
+        m_ShieldGhostSerializer.BeginSerialize(system);
     }
 
     public int CalculateImportance(int serializer, ArchetypeChunk chunk)
@@ -49,6 +53,8 @@ public struct NetAgentGhostSerializerCollection : IGhostSerializerCollection
                 return m_DashGhostSerializer.CalculateImportance(chunk);
             case 2:
                 return m_SwordGhostSerializer.CalculateImportance(chunk);
+            case 3:
+                return m_ShieldGhostSerializer.CalculateImportance(chunk);
         }
 
         throw new ArgumentException("Invalid serializer type");
@@ -64,6 +70,8 @@ public struct NetAgentGhostSerializerCollection : IGhostSerializerCollection
                 return m_DashGhostSerializer.SnapshotSize;
             case 2:
                 return m_SwordGhostSerializer.SnapshotSize;
+            case 3:
+                return m_ShieldGhostSerializer.SnapshotSize;
         }
 
         throw new ArgumentException("Invalid serializer type");
@@ -85,6 +93,10 @@ public struct NetAgentGhostSerializerCollection : IGhostSerializerCollection
             {
                 return GhostSendSystem<NetAgentGhostSerializerCollection>.InvokeSerialize<SwordGhostSerializer, SwordSnapshotData>(m_SwordGhostSerializer, ref dataStream, data);
             }
+            case 3:
+            {
+                return GhostSendSystem<NetAgentGhostSerializerCollection>.InvokeSerialize<ShieldGhostSerializer, ShieldSnapshotData>(m_ShieldGhostSerializer, ref dataStream, data);
+            }
             default:
                 throw new ArgumentException("Invalid serializer type");
         }
@@ -92,6 +104,7 @@ public struct NetAgentGhostSerializerCollection : IGhostSerializerCollection
     private AgentGhostSerializer m_AgentGhostSerializer;
     private DashGhostSerializer m_DashGhostSerializer;
     private SwordGhostSerializer m_SwordGhostSerializer;
+    private ShieldGhostSerializer m_ShieldGhostSerializer;
 }
 
 public struct EnableNetAgentGhostSendSystemComponent : IComponentData

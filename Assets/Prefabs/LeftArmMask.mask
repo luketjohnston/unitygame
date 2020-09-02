@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LeftArmMask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Char
+    m_Weight: 1
+  - m_Path: CharArmature
+    m_Weight: 1
+  - m_Path: CharArmature/Arm.IK.L
+    m_Weight: 1
+  - m_Path: CharArmature/Arm.IK.L/Arm.IK.L_end
+    m_Weight: 1
+  - m_Path: CharArmature/Arm.IK.R
+    m_Weight: 0
+  - m_Path: CharArmature/Arm.IK.R/Arm.IK.R_end
+    m_Weight: 1
+  - m_Path: CharArmature/Elbow.L
+    m_Weight: 1
+  - m_Path: CharArmature/Elbow.L/Elbow.L_end
+    m_Weight: 1
+  - m_Path: CharArmature/Elbow.R
+    m_Weight: 0
+  - m_Path: CharArmature/Elbow.R/Elbow.R_end
+    m_Weight: 1
+  - m_Path: CharArmature/Knee.L
+    m_Weight: 0
+  - m_Path: CharArmature/Knee.L/Knee.L_end
+    m_Weight: 1
+  - m_Path: CharArmature/Knee.R
+    m_Weight: 0
+  - m_Path: CharArmature/Knee.R/Knee.R_end
+    m_Weight: 1
+  - m_Path: CharArmature/Leg.IK.L
+    m_Weight: 0
+  - m_Path: CharArmature/Leg.IK.L/Leg.IK.L_end
+    m_Weight: 1
+  - m_Path: CharArmature/Leg.IK.R
+    m_Weight: 0
+  - m_Path: CharArmature/Leg.IK.R/Leg.IK.R_end
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis
+    m_Weight: 0
+  - m_Path: CharArmature/Pelvis/Ribcage
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Neck
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Neck/Head
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Neck/Head/Head_end
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Shoulder.L
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Shoulder.L/UpperArm.L
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Shoulder.L/UpperArm.L/Forearm.L
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Shoulder.L/UpperArm.L/Forearm.L/Hand.L
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Shoulder.L/UpperArm.L/Forearm.L/Hand.L/Hand.L_end
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Shoulder.R
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Shoulder.R/UpperArm.R
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Shoulder.R/UpperArm.R/Forearm.R
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Shoulder.R/UpperArm.R/Forearm.R/Hand.R
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Ribcage/Chest/Shoulder.R/UpperArm.R/Forearm.R/Hand.R/Hand.R_end
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Thigh.L
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Thigh.L/Calf.L
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Thigh.L/Calf.L/Foot.L
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Thigh.L/Calf.L/Foot.L/Foot.L_end
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Thigh.R
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Thigh.R/Calf.R
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Thigh.R/Calf.R/Foot.R
+    m_Weight: 1
+  - m_Path: CharArmature/Pelvis/Thigh.R/Calf.R/Foot.R/Foot.R_end
+    m_Weight: 1
+  - m_Path: ShieldArmature
+    m_Weight: 0
+  - m_Path: ShieldArmature/Bone.001
+    m_Weight: 1
+  - m_Path: ShieldArmature/Bone.001/Bone.001_end
+    m_Weight: 1
+  - m_Path: ShieldArmature/Bone.001/Shield
+    m_Weight: 1
+  - m_Path: SwordArmature
+    m_Weight: 0
+  - m_Path: SwordArmature/Bone
+    m_Weight: 1
+  - m_Path: SwordArmature/Bone/Bone_end
+    m_Weight: 1
+  - m_Path: SwordArmature/Bone/Sword
+    m_Weight: 1

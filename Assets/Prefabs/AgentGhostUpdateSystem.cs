@@ -26,11 +26,13 @@ public class AgentGhostUpdateSystem : JobComponentSystem
         [ReadOnly] public ArchetypeChunkEntityType ghostEntityType;
         public ArchetypeChunkComponentType<AgentComponent> ghostAgentComponentType;
         public ArchetypeChunkComponentType<BackwardModifier> ghostBackwardModifierType;
-        public ArchetypeChunkComponentType<CanMove> ghostCanMoveType;
+        public ArchetypeChunkComponentType<BusyTimer> ghostBusyTimerType;
         public ArchetypeChunkComponentType<DestinationComponent> ghostDestinationComponentType;
+        public ArchetypeChunkComponentType<FreezeTimer> ghostFreezeTimerType;
         public ArchetypeChunkComponentType<GameOrientation> ghostGameOrientationType;
         public ArchetypeChunkComponentType<GamePosition> ghostGamePositionType;
         public ArchetypeChunkComponentType<Health> ghostHealthType;
+        public ArchetypeChunkComponentType<Rotating> ghostRotatingType;
         public ArchetypeChunkComponentType<Speed> ghostSpeedType;
         public ArchetypeChunkComponentType<Rotation> ghostRotationType;
         public ArchetypeChunkComponentType<Translation> ghostTranslationType;
@@ -47,11 +49,13 @@ public class AgentGhostUpdateSystem : JobComponentSystem
             var ghostSnapshotDataArray = chunk.GetBufferAccessor(ghostSnapshotDataType);
             var ghostAgentComponentArray = chunk.GetNativeArray(ghostAgentComponentType);
             var ghostBackwardModifierArray = chunk.GetNativeArray(ghostBackwardModifierType);
-            var ghostCanMoveArray = chunk.GetNativeArray(ghostCanMoveType);
+            var ghostBusyTimerArray = chunk.GetNativeArray(ghostBusyTimerType);
             var ghostDestinationComponentArray = chunk.GetNativeArray(ghostDestinationComponentType);
+            var ghostFreezeTimerArray = chunk.GetNativeArray(ghostFreezeTimerType);
             var ghostGameOrientationArray = chunk.GetNativeArray(ghostGameOrientationType);
             var ghostGamePositionArray = chunk.GetNativeArray(ghostGamePositionType);
             var ghostHealthArray = chunk.GetNativeArray(ghostHealthType);
+            var ghostRotatingArray = chunk.GetNativeArray(ghostRotatingType);
             var ghostSpeedArray = chunk.GetNativeArray(ghostSpeedType);
             var ghostRotationArray = chunk.GetNativeArray(ghostRotationType);
             var ghostTranslationArray = chunk.GetNativeArray(ghostTranslationType);
@@ -78,34 +82,40 @@ public class AgentGhostUpdateSystem : JobComponentSystem
 
                 var ghostAgentComponent = ghostAgentComponentArray[entityIndex];
                 var ghostBackwardModifier = ghostBackwardModifierArray[entityIndex];
-                var ghostCanMove = ghostCanMoveArray[entityIndex];
+                var ghostBusyTimer = ghostBusyTimerArray[entityIndex];
                 var ghostDestinationComponent = ghostDestinationComponentArray[entityIndex];
+                var ghostFreezeTimer = ghostFreezeTimerArray[entityIndex];
                 var ghostGameOrientation = ghostGameOrientationArray[entityIndex];
                 var ghostGamePosition = ghostGamePositionArray[entityIndex];
                 var ghostHealth = ghostHealthArray[entityIndex];
+                var ghostRotating = ghostRotatingArray[entityIndex];
                 var ghostSpeed = ghostSpeedArray[entityIndex];
                 var ghostRotation = ghostRotationArray[entityIndex];
                 var ghostTranslation = ghostTranslationArray[entityIndex];
                 ghostAgentComponent.PlayerId = snapshotData.GetAgentComponentPlayerId(deserializerState);
                 ghostBackwardModifier.Value = snapshotData.GetBackwardModifierValue(deserializerState);
-                ghostCanMove.Value = snapshotData.GetCanMoveValue(deserializerState);
+                ghostBusyTimer.Value = snapshotData.GetBusyTimerValue(deserializerState);
                 ghostDestinationComponent.Value = snapshotData.GetDestinationComponentValue(deserializerState);
                 ghostDestinationComponent.Valid = snapshotData.GetDestinationComponentValid(deserializerState);
+                ghostFreezeTimer.Value = snapshotData.GetFreezeTimerValue(deserializerState);
                 ghostGameOrientation.Value = snapshotData.GetGameOrientationValue(deserializerState);
                 ghostGamePosition.Value = snapshotData.GetGamePositionValue(deserializerState);
                 ghostHealth.Value = snapshotData.GetHealthValue(deserializerState);
                 ghostHealth.regen = snapshotData.GetHealthregen(deserializerState);
                 ghostHealth.max = snapshotData.GetHealthmax(deserializerState);
+                ghostRotating.Value = snapshotData.GetRotatingValue(deserializerState);
                 ghostSpeed.Value = snapshotData.GetSpeedValue(deserializerState);
                 ghostRotation.Value = snapshotData.GetRotationValue(deserializerState);
                 ghostTranslation.Value = snapshotData.GetTranslationValue(deserializerState);
                 ghostAgentComponentArray[entityIndex] = ghostAgentComponent;
                 ghostBackwardModifierArray[entityIndex] = ghostBackwardModifier;
-                ghostCanMoveArray[entityIndex] = ghostCanMove;
+                ghostBusyTimerArray[entityIndex] = ghostBusyTimer;
                 ghostDestinationComponentArray[entityIndex] = ghostDestinationComponent;
+                ghostFreezeTimerArray[entityIndex] = ghostFreezeTimer;
                 ghostGameOrientationArray[entityIndex] = ghostGameOrientation;
                 ghostGamePositionArray[entityIndex] = ghostGamePosition;
                 ghostHealthArray[entityIndex] = ghostHealth;
+                ghostRotatingArray[entityIndex] = ghostRotating;
                 ghostSpeedArray[entityIndex] = ghostSpeed;
                 ghostRotationArray[entityIndex] = ghostRotation;
                 ghostTranslationArray[entityIndex] = ghostTranslation;
@@ -129,11 +139,13 @@ public class AgentGhostUpdateSystem : JobComponentSystem
         public ArchetypeChunkComponentType<PredictedGhostComponent> predictedGhostComponentType;
         public ArchetypeChunkComponentType<AgentComponent> ghostAgentComponentType;
         public ArchetypeChunkComponentType<BackwardModifier> ghostBackwardModifierType;
-        public ArchetypeChunkComponentType<CanMove> ghostCanMoveType;
+        public ArchetypeChunkComponentType<BusyTimer> ghostBusyTimerType;
         public ArchetypeChunkComponentType<DestinationComponent> ghostDestinationComponentType;
+        public ArchetypeChunkComponentType<FreezeTimer> ghostFreezeTimerType;
         public ArchetypeChunkComponentType<GameOrientation> ghostGameOrientationType;
         public ArchetypeChunkComponentType<GamePosition> ghostGamePositionType;
         public ArchetypeChunkComponentType<Health> ghostHealthType;
+        public ArchetypeChunkComponentType<Rotating> ghostRotatingType;
         public ArchetypeChunkComponentType<Speed> ghostSpeedType;
         public ArchetypeChunkComponentType<Rotation> ghostRotationType;
         public ArchetypeChunkComponentType<Translation> ghostTranslationType;
@@ -150,11 +162,13 @@ public class AgentGhostUpdateSystem : JobComponentSystem
             var predictedGhostComponentArray = chunk.GetNativeArray(predictedGhostComponentType);
             var ghostAgentComponentArray = chunk.GetNativeArray(ghostAgentComponentType);
             var ghostBackwardModifierArray = chunk.GetNativeArray(ghostBackwardModifierType);
-            var ghostCanMoveArray = chunk.GetNativeArray(ghostCanMoveType);
+            var ghostBusyTimerArray = chunk.GetNativeArray(ghostBusyTimerType);
             var ghostDestinationComponentArray = chunk.GetNativeArray(ghostDestinationComponentType);
+            var ghostFreezeTimerArray = chunk.GetNativeArray(ghostFreezeTimerType);
             var ghostGameOrientationArray = chunk.GetNativeArray(ghostGameOrientationType);
             var ghostGamePositionArray = chunk.GetNativeArray(ghostGamePositionType);
             var ghostHealthArray = chunk.GetNativeArray(ghostHealthType);
+            var ghostRotatingArray = chunk.GetNativeArray(ghostRotatingType);
             var ghostSpeedArray = chunk.GetNativeArray(ghostSpeedType);
             var ghostRotationArray = chunk.GetNativeArray(ghostRotationType);
             var ghostTranslationArray = chunk.GetNativeArray(ghostTranslationType);
@@ -191,34 +205,40 @@ public class AgentGhostUpdateSystem : JobComponentSystem
 
                 var ghostAgentComponent = ghostAgentComponentArray[entityIndex];
                 var ghostBackwardModifier = ghostBackwardModifierArray[entityIndex];
-                var ghostCanMove = ghostCanMoveArray[entityIndex];
+                var ghostBusyTimer = ghostBusyTimerArray[entityIndex];
                 var ghostDestinationComponent = ghostDestinationComponentArray[entityIndex];
+                var ghostFreezeTimer = ghostFreezeTimerArray[entityIndex];
                 var ghostGameOrientation = ghostGameOrientationArray[entityIndex];
                 var ghostGamePosition = ghostGamePositionArray[entityIndex];
                 var ghostHealth = ghostHealthArray[entityIndex];
+                var ghostRotating = ghostRotatingArray[entityIndex];
                 var ghostSpeed = ghostSpeedArray[entityIndex];
                 var ghostRotation = ghostRotationArray[entityIndex];
                 var ghostTranslation = ghostTranslationArray[entityIndex];
                 ghostAgentComponent.PlayerId = snapshotData.GetAgentComponentPlayerId(deserializerState);
                 ghostBackwardModifier.Value = snapshotData.GetBackwardModifierValue(deserializerState);
-                ghostCanMove.Value = snapshotData.GetCanMoveValue(deserializerState);
+                ghostBusyTimer.Value = snapshotData.GetBusyTimerValue(deserializerState);
                 ghostDestinationComponent.Value = snapshotData.GetDestinationComponentValue(deserializerState);
                 ghostDestinationComponent.Valid = snapshotData.GetDestinationComponentValid(deserializerState);
+                ghostFreezeTimer.Value = snapshotData.GetFreezeTimerValue(deserializerState);
                 ghostGameOrientation.Value = snapshotData.GetGameOrientationValue(deserializerState);
                 ghostGamePosition.Value = snapshotData.GetGamePositionValue(deserializerState);
                 ghostHealth.Value = snapshotData.GetHealthValue(deserializerState);
                 ghostHealth.regen = snapshotData.GetHealthregen(deserializerState);
                 ghostHealth.max = snapshotData.GetHealthmax(deserializerState);
+                ghostRotating.Value = snapshotData.GetRotatingValue(deserializerState);
                 ghostSpeed.Value = snapshotData.GetSpeedValue(deserializerState);
                 ghostRotation.Value = snapshotData.GetRotationValue(deserializerState);
                 ghostTranslation.Value = snapshotData.GetTranslationValue(deserializerState);
                 ghostAgentComponentArray[entityIndex] = ghostAgentComponent;
                 ghostBackwardModifierArray[entityIndex] = ghostBackwardModifier;
-                ghostCanMoveArray[entityIndex] = ghostCanMove;
+                ghostBusyTimerArray[entityIndex] = ghostBusyTimer;
                 ghostDestinationComponentArray[entityIndex] = ghostDestinationComponent;
+                ghostFreezeTimerArray[entityIndex] = ghostFreezeTimer;
                 ghostGameOrientationArray[entityIndex] = ghostGameOrientation;
                 ghostGamePositionArray[entityIndex] = ghostGamePosition;
                 ghostHealthArray[entityIndex] = ghostHealth;
+                ghostRotatingArray[entityIndex] = ghostRotating;
                 ghostSpeedArray[entityIndex] = ghostSpeed;
                 ghostRotationArray[entityIndex] = ghostRotation;
                 ghostTranslationArray[entityIndex] = ghostTranslation;
@@ -243,11 +263,13 @@ public class AgentGhostUpdateSystem : JobComponentSystem
                 ComponentType.ReadOnly<GhostComponent>(),
                 ComponentType.ReadWrite<AgentComponent>(),
                 ComponentType.ReadWrite<BackwardModifier>(),
-                ComponentType.ReadWrite<CanMove>(),
+                ComponentType.ReadWrite<BusyTimer>(),
                 ComponentType.ReadWrite<DestinationComponent>(),
+                ComponentType.ReadWrite<FreezeTimer>(),
                 ComponentType.ReadWrite<GameOrientation>(),
                 ComponentType.ReadWrite<GamePosition>(),
                 ComponentType.ReadWrite<Health>(),
+                ComponentType.ReadWrite<Rotating>(),
                 ComponentType.ReadWrite<Speed>(),
                 ComponentType.ReadWrite<Rotation>(),
                 ComponentType.ReadWrite<Translation>(),
@@ -262,11 +284,13 @@ public class AgentGhostUpdateSystem : JobComponentSystem
                 ComponentType.ReadOnly<PredictedGhostComponent>(),
                 ComponentType.ReadWrite<AgentComponent>(),
                 ComponentType.ReadWrite<BackwardModifier>(),
-                ComponentType.ReadWrite<CanMove>(),
+                ComponentType.ReadWrite<BusyTimer>(),
                 ComponentType.ReadWrite<DestinationComponent>(),
+                ComponentType.ReadWrite<FreezeTimer>(),
                 ComponentType.ReadWrite<GameOrientation>(),
                 ComponentType.ReadWrite<GamePosition>(),
                 ComponentType.ReadWrite<Health>(),
+                ComponentType.ReadWrite<Rotating>(),
                 ComponentType.ReadWrite<Speed>(),
                 ComponentType.ReadWrite<Rotation>(),
                 ComponentType.ReadWrite<Translation>(),
@@ -295,11 +319,13 @@ public class AgentGhostUpdateSystem : JobComponentSystem
                 predictedGhostComponentType = GetArchetypeChunkComponentType<PredictedGhostComponent>(),
                 ghostAgentComponentType = GetArchetypeChunkComponentType<AgentComponent>(),
                 ghostBackwardModifierType = GetArchetypeChunkComponentType<BackwardModifier>(),
-                ghostCanMoveType = GetArchetypeChunkComponentType<CanMove>(),
+                ghostBusyTimerType = GetArchetypeChunkComponentType<BusyTimer>(),
                 ghostDestinationComponentType = GetArchetypeChunkComponentType<DestinationComponent>(),
+                ghostFreezeTimerType = GetArchetypeChunkComponentType<FreezeTimer>(),
                 ghostGameOrientationType = GetArchetypeChunkComponentType<GameOrientation>(),
                 ghostGamePositionType = GetArchetypeChunkComponentType<GamePosition>(),
                 ghostHealthType = GetArchetypeChunkComponentType<Health>(),
+                ghostRotatingType = GetArchetypeChunkComponentType<Rotating>(),
                 ghostSpeedType = GetArchetypeChunkComponentType<Speed>(),
                 ghostRotationType = GetArchetypeChunkComponentType<Rotation>(),
                 ghostTranslationType = GetArchetypeChunkComponentType<Translation>(),
@@ -325,11 +351,13 @@ public class AgentGhostUpdateSystem : JobComponentSystem
                 ghostEntityType = GetArchetypeChunkEntityType(),
                 ghostAgentComponentType = GetArchetypeChunkComponentType<AgentComponent>(),
                 ghostBackwardModifierType = GetArchetypeChunkComponentType<BackwardModifier>(),
-                ghostCanMoveType = GetArchetypeChunkComponentType<CanMove>(),
+                ghostBusyTimerType = GetArchetypeChunkComponentType<BusyTimer>(),
                 ghostDestinationComponentType = GetArchetypeChunkComponentType<DestinationComponent>(),
+                ghostFreezeTimerType = GetArchetypeChunkComponentType<FreezeTimer>(),
                 ghostGameOrientationType = GetArchetypeChunkComponentType<GameOrientation>(),
                 ghostGamePositionType = GetArchetypeChunkComponentType<GamePosition>(),
                 ghostHealthType = GetArchetypeChunkComponentType<Health>(),
+                ghostRotatingType = GetArchetypeChunkComponentType<Rotating>(),
                 ghostSpeedType = GetArchetypeChunkComponentType<Speed>(),
                 ghostRotationType = GetArchetypeChunkComponentType<Rotation>(),
                 ghostTranslationType = GetArchetypeChunkComponentType<Translation>(),

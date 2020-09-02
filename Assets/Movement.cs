@@ -23,39 +23,51 @@ public class UpdateDestinationSystem : ComponentSystem
 
         var deltaTime = Time.DeltaTime;
 
-        Entities.ForEach((DynamicBuffer<AgentInput> inputBuffer, ref DestinationComponent destination, ref TargetOrientation target_orientation) =>
+        Entities.ForEach((DynamicBuffer<AgentInput> inputBuffer, ref DestinationComponent destination, ref Rotating rotating) =>
         {
 
             AgentInput input;
             inputBuffer.GetDataAtTick(tick, out input);
+            rotating.Value = 0;
             if (input.tick > last_processed_tick) {
               last_processed_tick = input.tick;
 
-              switch (input.type) {
-                case 1:
-                  destination.Value = input.destination;
-                  destination.Valid = true;
-                  //Debug.Log("Server got 'set destination'");
-                  break;
-                case 2:
-                  target_orientation.Value = input.target_orientation;
-                  break;
-                case 3:
-                  Entity ability = GhostServerSystem.getGhost(input.ghostId);
-                  //Debug.Log("ability:");
-                  //Debug.Log(ability);
-                  Usable usable = EntityManager.GetComponentData<Usable>(ability);
-                  Cooldown cooldown = EntityManager.GetComponentData<Cooldown>(ability);
-                  //Debug.Log("Server got 'use ability'");
-                  if (usable.canuse) {
-                    
-                    usable.inuse = true;
-                    usable.canuse = false;
-                    cooldown.timer = cooldown.duration;
-                    EntityManager.SetComponentData<Usable>(ability, usable);
-                    EntityManager.SetComponentData<Cooldown>(ability, cooldown);
+              if (input.DestinationUpdated()) {
+                destination.Value = input.location;
+                destination.Valid = true;
+              }
+
+              // if input.OrientationUdpdated
+              // target_orientation.Value = input.target_orientation;
+
+              // TODO can we process canuse somewhere else?
+              if (input.AbilityUsed()) {
+                Entity ability = GhostServerSystem.getGhost(input.ghostId);
+                Usable usable = EntityManager.GetComponentData<Usable>(ability);
+                if (usable.canuse) {
+                  
+                  usable.inuse = true;
+                  usable.canuse = false;
+                  EntityManager.SetComponentData<Usable>(ability, usable);
+
+                  if (input.AngleSent()) {
+                    AngleInput angle = EntityManager.GetComponentData<AngleInput>(ability);
+                    angle.Value = input.angle;
+                    EntityManager.SetComponentData<AngleInput>(ability, angle);
                   }
-                  break;
+                }
+              }
+              if (input.RotatingLeft()) {
+                rotating.Value = -1;
+              }
+              if (input.RotatingRight()) {
+                rotating.Value = +1;
+              }
+              if (input.AbilityReleased()) {
+                Entity ability = GhostServerSystem.getGhost(input.ghostId_released);
+                Releasable releasable = EntityManager.GetComponentData<Releasable>(ability);
+                releasable.released = true;
+                EntityManager.SetComponentData<Releasable>(ability, releasable);
               }
             }
         });
@@ -73,10 +85,14 @@ public class MoveAgentSystem : ComponentSystem
 
     var deltaTime = Time.DeltaTime;
 
-    Entities.ForEach((ref DestinationComponent dest, ref GamePosition position, ref Speed speed, ref GameOrientation orientation, ref BackwardModifier modifier, ref CanMove canmove) => 
+    Entities.ForEach((ref BusyTimer busyTimer) => {
+        busyTimer.Value -= deltaTime;
+    });
+
+    Entities.ForEach((ref DestinationComponent dest, ref GamePosition position, ref Speed speed, ref GameOrientation orientation, ref BackwardModifier modifier, ref BusyTimer busyTimer) => 
     {
 
-       if (!dest.Value.Equals(position.Value) && dest.Valid && canmove.Value) {
+       if (!dest.Value.Equals(position.Value) && dest.Valid && busyTimer.Value <= 0) {
          
          float2 deltaPos = dest.Value - position.Value;
 
@@ -95,11 +111,9 @@ public class MoveAgentSystem : ComponentSystem
 
          if (math.length(deltaPos) < speed.Value * deltaTime * mov_mod) {
            position.Value = dest.Value;
-           Debug.Log("Setting position to destination");
          } else {
            deltaPos = speed.Value * deltaTime * math.normalize(deltaPos) * mov_mod;
            position.Value += deltaPos;
-           Debug.Log("updating position by deltapos");
          }
 
 
@@ -116,48 +130,24 @@ public class MoveAgentSystem : ComponentSystem
         }
     });
 
-    Entities.ForEach((ref Rotation rot, ref TargetOrientation target, ref GameOrientation orientation) => 
+    Entities.ForEach((ref Rotation rot, ref Rotating rotating, ref GameOrientation orientation) => 
     {
         float rotSpeed = 720f;
-        if (math.length(target.Value) != 0) {
-          Quaternion target_orientation = Quaternion.LookRotation(Utility.f2tov3(target.Value), Vector3.up);
-          rot.Value = Quaternion.RotateTowards(rot.Value, target_orientation, rotSpeed * deltaTime);
-          orientation.Value = math.rotate(rot.Value, new float3(0,0,1)).xz;
-        }
+
+        
+        rot.Value *= Quaternion.AngleAxis(rotSpeed * rotating.Value * deltaTime, Vector3.up);
+        orientation.Value = math.rotate(rot.Value, new float3(0,0,1)).xz;
+
+        //if (math.length(target.Value) != 0) {
+        //  Quaternion target_orientation = Quaternion.LookRotation(Utility.f2tov3(target.Value), Vector3.up);
+        //  rot.Value = Quaternion.RotateTowards(rot.Value, target_orientation, rotSpeed * deltaTime);
+        //  orientation.Value = math.rotate(rot.Value, new float3(0,0,1)).xz;
+        //}
 
     });
   }
 }
 
-[UpdateInGroup(typeof(ClientAndServerSimulationSystemGroup))]
-public class UpdateAnimationSystem : ComponentSystem {
-  protected override void OnUpdate() {
 
-    Entities.ForEach((Entity ent, ref Translation trans, ref DestinationComponent dest, ref GamePosition position, ref AnimationInitialized anim_init) => {
-      GameObject animatingBody = EntityManager.GetComponentObject<GameObject>(ent);
-      bool idle = dest.Value.Equals(position.Value);
-      if (!idle) {
-        // update animatingbody's position
-        animatingBody.transform.localPosition = Utility.f2tov3(position.Value);
-      } 
-      Debug.Log(idle);
-      animatingBody.GetComponent<Animator>().SetBool("Idle", idle);
-    });
 
-    Entities.ForEach((Entity ent, ref Rotation rot, ref DestinationComponent dest, ref GamePosition position, ref GameOrientation orientation, ref AnimationInitialized anim_init) => {
-      // update animatingbody's rotation
-      GameObject animatingBody = EntityManager.GetComponentObject<GameObject>(ent);
-      
-      float2 deltaPos = dest.Value - position.Value;
-      float angle_to_movement = Vector2.SignedAngle(Utility.f2tov2(orientation.Value), Utility.f2tov2(deltaPos));
-      float angle_from_right = angle_to_movement + 90;
-      if (angle_from_right < 0) {
-        angle_from_right += 360;
-      }
-      animatingBody.GetComponent<Animator>().SetFloat("AngleFromRight", angle_from_right);
-      Debug.Log("angle_from_right");
-      Debug.Log(angle_from_right);
-      animatingBody.transform.localRotation = rot.Value;
-    });
-  }
-}
+

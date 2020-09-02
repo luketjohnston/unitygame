@@ -1,35 +1,50 @@
 fileFormatVersion: 2
-guid: 513d4f653512e5641b39080700f8b34c
+guid: 701aac0ce1a5dd143b90836944720ffc
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
   - first:
-      74: 8771704567246555937
-    second: SidestepAnimation.001
+      74: -7890357528521712418
+    second: CharArmature|A_Ready
   - first:
-      74: 5779384568756437347
-    second: Armature|BackSidestepLeft
+      74: 1615741501434969850
+    second: CharArmature|BackSidestepLeft
   - first:
-      74: -2006247738474615541
-    second: Armature|BackSidestepRight
+      74: 4155986365521852623
+    second: CharArmature|BackSidestepRight
   - first:
-      74: -7792758738058933249
-    second: Armature|Backward
+      74: 5014964398660313668
+    second: CharArmature|Backward
   - first:
-      74: -8945691123924629249
-    second: Armature|Idle
+      74: -5942821111869324451
+    second: CharArmature|BlockFront
   - first:
-      74: -4005463219817770956
-    second: Armature|RunAnimation
+      74: 7077905323375373431
+    second: CharArmature|BlockLeft
   - first:
-      74: 1948794455751688917
-    second: Armature|SidestepLeft
+      74: -6313503634463633096
+    second: CharArmature|BlockRight
   - first:
-      74: 5850519461943549291
-    second: Armature|SidestepRight
+      74: -1733331002341998018
+    second: CharArmature|Idle
   - first:
-      74: 902931983894591057
-    second: Armature|Backward (1)
+      74: 1364341420701043152
+    second: CharArmature|RunAnimation
+  - first:
+      74: 6792293764135995818
+    second: CharArmature|SidestepLeft
+  - first:
+      74: -3856227753654544892
+    second: CharArmature|SidestepRight
+  - first:
+      74: -7224240448258028241
+    second: CharArmature|Stab
+  - first:
+      74: 4013474888193565408
+    second: CharArmature|tpose
+  - first:
+      74: 5856962439386765127
+    second: ShieldArmature|Stab
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -59,8 +74,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Armature|Backward (1)
-      takeName: Armature|Backward
+      name: CharArmature|A_Ready
+      takeName: CharArmature|A_Ready
       internalID: 0
       firstFrame: 0
       lastFrame: 20
@@ -88,8 +103,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|BackSidestepLeft
-      takeName: Armature|BackSidestepLeft
+      name: CharArmature|BackSidestepLeft
+      takeName: CharArmature|BackSidestepLeft
       internalID: 0
       firstFrame: 0
       lastFrame: 20
@@ -117,8 +132,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|BackSidestepRight
-      takeName: Armature|BackSidestepRight
+      name: CharArmature|BackSidestepRight
+      takeName: CharArmature|BackSidestepRight
       internalID: 0
       firstFrame: 0
       lastFrame: 20
@@ -146,8 +161,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Backward
-      takeName: Armature|Backward
+      name: CharArmature|Backward
+      takeName: CharArmature|Backward
       internalID: 0
       firstFrame: 0
       lastFrame: 20
@@ -175,8 +190,95 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Idle
-      takeName: Armature|Idle
+      name: CharArmature|BlockFront
+      takeName: CharArmature|BlockFront
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: CharArmature|BlockLeft
+      takeName: CharArmature|BlockLeft
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: CharArmature|BlockRight
+      takeName: CharArmature|BlockRight
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: CharArmature|Idle
+      takeName: CharArmature|Idle
       internalID: 0
       firstFrame: 0
       lastFrame: 20
@@ -204,8 +306,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|RunAnimation
-      takeName: Armature|RunAnimation
+      name: CharArmature|RunAnimation
+      takeName: CharArmature|RunAnimation
       internalID: 0
       firstFrame: 0
       lastFrame: 24
@@ -233,8 +335,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|SidestepLeft
-      takeName: Armature|SidestepLeft
+      name: CharArmature|SidestepLeft
+      takeName: CharArmature|SidestepLeft
       internalID: 0
       firstFrame: 0
       lastFrame: 20
@@ -262,8 +364,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|SidestepRight
-      takeName: Armature|SidestepRight
+      name: CharArmature|SidestepRight
+      takeName: CharArmature|SidestepRight
       internalID: 0
       firstFrame: 0
       lastFrame: 20
@@ -274,6 +376,93 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: CharArmature|Stab
+      takeName: CharArmature|Stab
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: CharArmature|tpose
+      takeName: CharArmature|tpose
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ShieldArmature|Stab
+      takeName: ShieldArmature|Stab
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -349,7 +538,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

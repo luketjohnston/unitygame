@@ -136,14 +136,32 @@ public class GoInGameServerSystem : ComponentSystem
             Entity dash3 = DashSystem.AddAbility(player, 1, 1000, 7, new float3(1,0,0), KeyCode.D, EntityManager, ghostCollection);
             Entity dash4 = DashSystem.AddAbility(player, 1, 1000, 7, new float3(-1,0,0), KeyCode.F, EntityManager, ghostCollection);
             Entity sword = SwordSystem.AddAbility(player, EntityManager, ghostCollection);
+            Entity shield = ShieldSystem.AddAbility(player, EntityManager, ghostCollection);
 
 
 
-#if (!UNITY_EDITOR)
-            GameObject animate_prefab = Resources.Load<GameObject>("Prefabs/character3");
+//#if (!UNITY_EDITOR)
+            GameObject animate_prefab = Resources.Load<GameObject>("Prefabs/gladiator");
             GameObject obj = UnityEngine.Object.Instantiate(animate_prefab);
+            // setup pointer to entity from object
+            obj.GetComponent<PlayerMono>().entity = player;
+            // setup pointers to entities from sword object
+            var swordObj = obj.transform.Find("CharArmature/Pelvis/Ribcage/Chest/Shoulder.R/UpperArm.R/Forearm.R/Hand.R/SwordArmature/Bone/Sword");
+            SwordMono swordMono = swordObj.GetComponent<SwordMono>();
+            swordMono.entity = sword;
+            swordMono.player = player;
+            EntityManager.AddComponentObject(sword, swordMono);
+
+            var shieldObj = obj.transform.Find("CharArmature/Pelvis/Ribcage/Chest/Shoulder.L/UpperArm.L/Forearm.L/ShieldArmature/Bone.001/Shield");
+            ShieldMono shieldMono = shieldObj.GetComponent<ShieldMono>();
+            shieldMono.entity = shield;
+            shieldMono.player = player;
+            EntityManager.AddComponentObject(shield, shieldMono);
+
+            obj.transform.localScale *= 0.5f;
             EntityManager.AddComponentObject(player, obj);
-#endif
+            PostUpdateCommands.AddComponent<AnimationInitialized>(player);
+//#endif
 
         });
     }
@@ -152,7 +170,7 @@ public class GoInGameServerSystem : ComponentSystem
       EntityManager.SetComponentData(player, new Speed {Value = 22f});
       EntityManager.SetComponentData(player, new BackwardModifier {Value = 0.70f});
       EntityManager.SetComponentData(player, new GameOrientation {Value = new float2(0,1)});
-      EntityManager.SetComponentData(player, new CanMove {Value = true});
+      EntityManager.SetComponentData(player, new BusyTimer {Value = 0});
       EntityManager.SetComponentData(player, new Health {Value = 100, regen = 2f, max = 100});
 
       //EntityManager.Instantiate(PrefabEntities.healthBar);
@@ -174,7 +192,7 @@ public class ClientObjectsInit : ComponentSystem
         //Debug.LogError("in onpudate in goingamesystem");
         Entities.WithNone<AnimationInitialized>().ForEach((Entity ent, ref AgentComponent id) =>
         {
-            GameObject animate_prefab = Resources.Load<GameObject>("Prefabs/character3");
+            GameObject animate_prefab = Resources.Load<GameObject>("Prefabs/gladiator");
             GameObject obj = UnityEngine.Object.Instantiate(animate_prefab);
             obj.transform.localScale *= 0.5f;
             EntityManager.AddComponentObject(ent, obj);

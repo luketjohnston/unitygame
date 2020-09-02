@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &-2105676187674860400
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 2144135145094057046}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: -1619506561752728791}
+  m_Layer: 0
+  m_Name: sword1 (Missing Prefab)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &-1619506561752728791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 2144135145094057046}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: -2105676187674860400}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1894826804875520957}
+  m_Father: {fileID: 2144135143435292878}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2144135143435292877
 GameObject:
   m_ObjectHideFlags: 0
@@ -35,7 +66,7 @@ Transform:
   m_LocalPosition: {x: 2, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
-  - {fileID: 1894826804875520957}
+  - {fileID: -1619506561752728791}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -207,35 +238,14 @@ MonoBehaviour:
     server: 1
     sendDataTo: 0
     fields:
+    - name: inuse
+      quantization: -1
+      interpolate: 0
     - name: canuse
       quantization: -1
       interpolate: 0
     manualFieldList: 0
     entityIndex: 0
-  - name: Unity.Rendering.PerInstanceCullingTag
-    interpolatedClient: 1
-    predictedClient: 1
-    server: 1
-    sendDataTo: 0
-    fields: []
-    manualFieldList: 0
-    entityIndex: 1
-  - name: Unity.Rendering.RenderBounds
-    interpolatedClient: 1
-    predictedClient: 1
-    server: 1
-    sendDataTo: 0
-    fields: []
-    manualFieldList: 0
-    entityIndex: 1
-  - name: Unity.Rendering.RenderMesh
-    interpolatedClient: 1
-    predictedClient: 1
-    server: 1
-    sendDataTo: 0
-    fields: []
-    manualFieldList: 0
-    entityIndex: 1
   - name: Unity.Transforms.LocalToParent
     interpolatedClient: 1
     predictedClient: 1
@@ -245,14 +255,6 @@ MonoBehaviour:
     manualFieldList: 0
     entityIndex: 1
   - name: Unity.Transforms.LocalToWorld
-    interpolatedClient: 1
-    predictedClient: 1
-    server: 1
-    sendDataTo: 0
-    fields: []
-    manualFieldList: 0
-    entityIndex: 1
-  - name: Unity.Transforms.NonUniformScale
     interpolatedClient: 1
     predictedClient: 1
     server: 1
@@ -290,6 +292,52 @@ MonoBehaviour:
       interpolate: 1
     manualFieldList: 0
     entityIndex: 1
+  - name: Unity.Transforms.LocalToParent
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields: []
+    manualFieldList: 0
+    entityIndex: 2
+  - name: Unity.Transforms.LocalToWorld
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields: []
+    manualFieldList: 0
+    entityIndex: 2
+  - name: Unity.Transforms.Parent
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields: []
+    manualFieldList: 0
+    entityIndex: 2
+  - name: Unity.Transforms.Rotation
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields:
+    - name: Value
+      quantization: 1000
+      interpolate: 1
+    manualFieldList: 0
+    entityIndex: 2
+  - name: Unity.Transforms.Translation
+    interpolatedClient: 1
+    predictedClient: 1
+    server: 1
+    sendDataTo: 0
+    fields:
+    - name: Value
+      quantization: 100
+      interpolate: 1
+    manualFieldList: 0
+    entityIndex: 2
   prefabId: 3a69ac5fbe9b6ee408f98426e629bf10
   Name: Sword
   doNotStrip: 0
@@ -329,7 +377,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2144135143435292877}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c29cc5b22634fab4dbdfe191b68a4033, type: 3}
+  m_Script: {fileID: 11500000, guid: 81df72c5497281a43b820fdcaf8fd526, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
@@ -541,6 +589,37 @@ MonoBehaviour:
     Tag05: 0
     Tag06: 0
     Tag07: 0
+--- !u!1 &6546923916990955624
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 2144135145094057046}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1894826804875520957}
+  m_Layer: 0
+  m_Name: Missing Prefab (Dummy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1894826804875520957
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 08c633181db38904f87b1d9070db7bd3,
+    type: 3}
+  m_PrefabInstance: {fileID: 2144135145094057046}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6546923916990955624}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: -1619506561752728791}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2144135145094057046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -610,9 +689,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08c633181db38904f87b1d9070db7bd3, type: 3}
---- !u!4 &1894826804875520957 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 08c633181db38904f87b1d9070db7bd3,
-    type: 3}
-  m_PrefabInstance: {fileID: 2144135145094057046}
-  m_PrefabAsset: {fileID: 0}
