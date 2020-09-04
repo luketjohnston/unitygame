@@ -4,6 +4,6 @@ using Unity.NetCode;
 [GenerateAuthoringComponent]
 public struct AgentComponent : IComponentData
 {
-    [GhostDefaultField]
+    [GhostField]
     public int PlayerId;
 }

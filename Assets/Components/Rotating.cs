@@ -5,6 +5,6 @@ using Unity.Mathematics;
 [GenerateAuthoringComponent]
 public struct Rotating : IComponentData
 {
-  [GhostDefaultField]
+  [GhostField]
   public int Value;
 }

@@ -24,43 +24,41 @@ public class SwordSystem : ComponentSystem
     Entities.ForEach((ref Sword sword, ref Usable usable, ref OwningPlayer player, ref Cooldown cooldown) => 
     {
 
-       GameObject animatingBody = EntityManager.GetComponentObject<GameObject>(player.Value);
-       Animator anim = animatingBody.GetComponent<Animator>();
-       float speed = anim.GetFloat("StabSpeed");
-       float stabTime = Utility.AnimationLength("CharArmature|Stab", animatingBody) / speed;
+       //GameObject animatingBody = EntityManager.GetComponentObject<GameObject>(player.Value);
+       //Animator anim = animatingBody.GetComponent<Animator>();
+       //float speed = anim.GetFloat("StabSpeed");
+       //float stabTime = Utility.AnimationLength("CharArmature|Stab", animatingBody) / speed;
+       float stabTime = 0.25f;
 
        
        // TODO the order of operations matters here probably?
        if (usable.inuse) {
-
          BusyTimer busyTimer = EntityManager.GetComponentData<BusyTimer>(player.Value);
          if (cooldown.timer == cooldown.duration) {
-
            // make agent unable to move, unset destination, start animation
            DestinationComponent dest = EntityManager.GetComponentData<DestinationComponent>(player.Value);
            dest.Valid = false; 
            busyTimer.Value = stabTime;
            EntityManager.SetComponentData<DestinationComponent>(player.Value, dest);
            EntityManager.SetComponentData<BusyTimer>(player.Value, busyTimer);
-           anim.SetBool("Idle", true);
-           anim.SetBool("Stabbing", true);
+           //anim.SetBool("Idle", true);
+           //anim.SetBool("Stabbing", true);
          }
 
          if (cooldown.timer > 0 && cooldown.timer < cooldown.duration - stabTime) {
-           
+           Debug.Log("setting inuse to false");
            usable.inuse = false;
-           anim.SetBool("Stabbing", false);
-           anim.SetBool("Idle", true);
+           //anim.SetBool("Stabbing", false);
+           //anim.SetBool("Idle", true);
          }
        }
-
-
     });
   }
 
   public static Entity AddAbility(Entity agent, EntityManager manager, GhostPrefabCollectionComponent ghostCollection) {
 
-    var ghostId = NetAgentGhostSerializerCollection.FindGhostType<SwordSnapshotData>();
+    //var ghostId = NetAgentGhostSerializerCollection.FindGhostType<SwordSnapshotData>();
+    var ghostId = 3;
     var prefab = manager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs)[ghostId].Value;
     var ability = manager.Instantiate(prefab);
     
@@ -70,19 +68,19 @@ public class SwordSystem : ComponentSystem
     cooldown.timer = 0;
     cooldown.duration = 1;
     sword.damage = 10;
-    keycode.Value = KeyCode.A;
+    keycode.Value = KeyCode.Space;
     usable.inuse = false;
     usable.canuse = true;
     player.Value = agent;
     player.PlayerId = manager.GetComponentData<AgentComponent>(agent).PlayerId;
-    trans.Value = new float3(100000,1,0); // so it starts invisible
+    //trans.Value = new float3(100000,1,0); // so it starts invisible
 
     manager.SetComponentData<Cooldown>(ability, cooldown);
     manager.SetComponentData<Usable>(ability, usable);
     manager.SetComponentData<KeyCodeComp>(ability, keycode);
     manager.SetComponentData<Sword>(ability, sword);
     manager.SetComponentData<OwningPlayer>(ability, player);
-    manager.SetComponentData<Translation>(ability, trans);
+    //manager.SetComponentData<Translation>(ability, trans);
 
     return ability;
   }
@@ -92,19 +90,23 @@ public class SwordSystem : ComponentSystem
 
 // update health bar prefabs with correct health
 // TODO: Make sure this happens after agent move update, otherwise it lags behind 
-[UpdateInGroup(typeof(ClientAndServerSimulationSystemGroup))]
+[UpdateInGroup(typeof(ClientSimulationSystemGroup))]
 public class SwordUpdateAnimationSystem : ComponentSystem
 {
   protected override void OnUpdate() {
 
     Entities.ForEach((ref Sword sword, ref Usable usable, ref OwningPlayer player, ref Cooldown cooldown, ref Translation trans, ref Rotation rot) => 
     {
-       GameObject animatingBody = EntityManager.GetComponentObject<GameObject>(player.Value);
-       if (usable.inuse) {
-         animatingBody.GetComponent<Animator>().SetBool("Idle", true);
-         animatingBody.GetComponent<Animator>().SetBool("Stabbing", true);
-       } else { 
-         animatingBody.GetComponent<Animator>().SetBool("Stabbing", false);
+       if (EntityManager.HasComponent<AnimationInitialized>(player.Value)) {
+         GameObject animatingBody = EntityManager.GetComponentObject<GameObject>(player.Value);
+         if (animatingBody != null) {
+           if (usable.inuse) {
+             animatingBody.GetComponent<Animator>().SetBool("Idle", true);
+             animatingBody.GetComponent<Animator>().SetBool("Stabbing", true);
+           } else { 
+             animatingBody.GetComponent<Animator>().SetBool("Stabbing", false);
+           }
+         }
        }
     });
   }

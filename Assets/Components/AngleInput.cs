@@ -6,7 +6,7 @@ using Unity.NetCode;
 public struct AngleInput : IComponentData
 {
 
-  [GhostDefaultField(1000)]
+  [GhostField(Quantization=1000)]
   public float Value;
 
 }

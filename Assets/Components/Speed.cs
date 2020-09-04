@@ -5,7 +5,7 @@ using Unity.NetCode;
 [GenerateAuthoringComponent]
 public struct Speed : IComponentData
 {
-  [GhostDefaultField(1000)]
+  [GhostField(Quantization=1000)]
   public float Value;
 
 }

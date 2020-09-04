@@ -22,37 +22,25 @@ public class ShieldSystem : ComponentSystem
     Entities.ForEach((ref Shield shield, ref Usable usable, ref OwningPlayer player, ref AngleInput angle, ref Releasable releasable) => 
     {
 
-       
-       GameObject animatingBody = EntityManager.GetComponentObject<GameObject>(player.Value);
-       Animator anim = animatingBody.GetComponent<Animator>();
-
        if (releasable.released) {
          usable.inuse = false;
          releasable.released = false;
        }
-       
        if (usable.inuse) {
-
-
          usable.canuse = true; // keep this true always
-
          DestinationComponent dest = EntityManager.GetComponentData<DestinationComponent>(player.Value);
          dest.Valid = false; 
          EntityManager.SetComponentData<DestinationComponent>(player.Value, dest);
-         anim.SetBool("Idle", true);
-         anim.SetBool("Blocking", true);
-         anim.SetLayerWeight(1, 1);
-         anim.SetFloat("BlockAngle", angle.Value);
        } else {
-         anim.SetBool("Blocking", false);
-         anim.SetLayerWeight(1, 0);
+         // pass
        }
     });
   }
 
   public static Entity AddAbility(Entity agent, EntityManager manager, GhostPrefabCollectionComponent ghostCollection) {
 
-    var ghostId = NetAgentGhostSerializerCollection.FindGhostType<ShieldSnapshotData>();
+    //var ghostId = NetAgentGhostSerializerCollection.FindGhostType<ShieldSnapshotData>();
+    var ghostId = 2;
     var prefab = manager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs)[ghostId].Value;
     var ability = manager.Instantiate(prefab);
     
@@ -90,15 +78,17 @@ public class ShieldUpdateAnimationSystem : ComponentSystem
 
     Entities.ForEach((ref Shield shield, ref Usable usable, ref OwningPlayer player) => 
     {
-       GameObject animatingBody = EntityManager.GetComponentObject<GameObject>(player.Value);
-       Animator anim = animatingBody.GetComponent<Animator>();
-       if (usable.inuse) {
-         anim.SetBool("Idle", true);
-         anim.SetBool("Blocking", true);
-         anim.SetLayerWeight(1, 1);
-       } else { 
-         anim.SetBool("Blocking", false);
-         anim.SetLayerWeight(1, 0);
+       if (EntityManager.HasComponent<AnimationInitialized>(player.Value)) {
+         GameObject animatingBody = EntityManager.GetComponentObject<GameObject>(player.Value);
+         Animator anim = animatingBody.GetComponent<Animator>();
+         if (usable.inuse) {
+           anim.SetBool("Idle", true);
+           anim.SetBool("Blocking", true);
+           anim.SetLayerWeight(1, 1);
+         } else { 
+           anim.SetBool("Blocking", false);
+           anim.SetLayerWeight(1, 0);
+         }
        }
     });
   }

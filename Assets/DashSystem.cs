@@ -60,7 +60,8 @@ public class DashSystem : ComponentSystem
 
   public static Entity AddAbility(Entity agent, float cooldown_length, float speed, float distance, float3 dir, KeyCode key, EntityManager manager, GhostPrefabCollectionComponent ghostCollection) {
 
-    var ghostId = NetAgentGhostSerializerCollection.FindGhostType<DashSnapshotData>();
+    //var ghostId = NetAgentGhostSerializerCollection.FindGhostType<DashSnapshotData>();
+    var ghostId = 1;
     var prefab = manager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs)[ghostId].Value;
     var ability = manager.Instantiate(prefab);
     

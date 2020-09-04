@@ -5,7 +5,7 @@ using Unity.NetCode;
 [GenerateAuthoringComponent]
 public struct CanMove : IComponentData
 {
-  [GhostDefaultField]
+  [GhostField]
   public bool Value;
 
 }

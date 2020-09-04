@@ -5,6 +5,6 @@ using Unity.NetCode;
 [GenerateAuthoringComponent]
 public struct FreezeTimer : IComponentData
 {
-  [GhostDefaultField(1000)]
+  [GhostField(Quantization=1000)]
   public float Value;
 }

@@ -5,9 +5,9 @@ using Unity.NetCode;
 [GenerateAuthoringComponent]
 public struct DestinationComponent : IComponentData
 {
-  [GhostDefaultField(1000)]
+  [GhostField(Quantization=1000)]
   public float2 Value;
-  [GhostDefaultField]
+  [GhostField]
   public bool Valid;
 
 }

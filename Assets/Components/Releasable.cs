@@ -6,6 +6,6 @@ using Unity.NetCode;
 // need to know when s is released to stop blocking.
 [GenerateAuthoringComponent]
 public struct Releasable : IComponentData {
-  [GhostDefaultField]
+  [GhostField]
   public bool released;
 }

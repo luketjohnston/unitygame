@@ -174,7 +174,7 @@ public class SampleAgentInput : ComponentSystem
     protected override void OnCreate()
     {
         RequireSingletonForUpdate<NetworkIdComponent>();
-        RequireSingletonForUpdate<EnableNetAgentGhostReceiveSystemComponent>();
+        //RequireSingletonForUpdate<EnableNetAgentGhostReceiveSystemComponent>();
     }
 
     protected override void OnUpdate()

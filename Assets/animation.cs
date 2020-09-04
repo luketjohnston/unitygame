@@ -11,7 +11,7 @@ using Unity.Mathematics;
 
 
 // TODO Make this only run once
-[UpdateInGroup(typeof(ClientAndServerSimulationSystemGroup))]
+[UpdateInGroup(typeof(ClientSimulationSystemGroup))]
 public class InitializeAnimatorParams : ComponentSystem {
   protected override void OnUpdate() {
     Entities.ForEach((Entity ent, ref AnimationInitialized anim_init) => {
@@ -26,7 +26,7 @@ public class InitializeAnimatorParams : ComponentSystem {
 
 
 
-[UpdateInGroup(typeof(ClientAndServerSimulationSystemGroup))]
+[UpdateInGroup(typeof(ClientSimulationSystemGroup))]
 public class UpdateAnimationSystem : ComponentSystem {
   protected override void OnUpdate() {
 

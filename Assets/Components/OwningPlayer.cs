@@ -3,8 +3,8 @@ using Unity.NetCode;
 
 [GenerateAuthoringComponent]
 public struct OwningPlayer : IComponentData {
-  [GhostDefaultField]
+  [GhostField]
   public Entity Value;
-  [GhostDefaultField]
+  [GhostField]
   public int PlayerId;
 }

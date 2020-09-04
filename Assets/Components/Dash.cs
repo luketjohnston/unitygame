@@ -9,13 +9,13 @@ using Unity.Transforms;
 
 [GenerateAuthoringComponent]
 public struct Dash : IComponentData {
-  [GhostDefaultField(1000)]
+  [GhostField(Quantization=1000)]
   public float distance_traveled;
-  [GhostDefaultField(1000)]
+  [GhostField(Quantization=1000)]
   public float max_distance;
-  [GhostDefaultField(1000)]
+  [GhostField(Quantization=1000)]
   public float speed;
-  [GhostDefaultField(1000)]
+  [GhostField(Quantization=1000)]
   public float3 dir;
 }
 

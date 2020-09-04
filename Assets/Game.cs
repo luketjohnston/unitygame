@@ -31,11 +31,12 @@ public class Game : ComponentSystem
             if (world.GetExistingSystem<ClientSimulationSystemGroup>() != null)
             {
                 // Client worlds automatically connect to localhost
-                //NetworkEndPoint ep = NetworkEndPoint.LoopbackIpv4;
-                //ep.Port = 7979;
-                NetworkEndPoint ep = NetworkEndPoint.Parse("98.207.153.86", 7979);
+                NetworkEndPoint ep = NetworkEndPoint.LoopbackIpv4;
+                ep.Port = 7979;
+		// TODO When want to connect online, replace above two lines with below two
+                //NetworkEndPoint ep = NetworkEndPoint.Parse("98.207.153.86", 7979);
 #if UNITY_EDITOR
-                ep = NetworkEndPoint.Parse(ClientServerBootstrap.RequestedAutoConnect, 7979);
+                //ep = NetworkEndPoint.Parse(ClientServerBootstrap.RequestedAutoConnect, 7979);
 #endif
                 network.Connect(ep);
             }
@@ -52,34 +53,13 @@ public class Game : ComponentSystem
     }
 }
 
-[BurstCompile]
-public struct GoInGameRequest : IRpcCommand
-{
-    public void Deserialize(ref DataStreamReader reader)
-    {
-    }
+public struct GoInGameRequest : IRpcCommand {}
 
-    public void Serialize(ref DataStreamWriter writer)
-    {
-    }
-    [BurstCompile]
-    private static void InvokeExecute(ref RpcExecutor.Parameters parameters)
-    {
-        RpcExecutor.ExecuteCreateRequestComponent<GoInGameRequest>(ref parameters);
-    }
-
-    static PortableFunctionPointer<RpcExecutor.ExecuteDelegate> InvokeExecuteFunctionPointer =
-        new PortableFunctionPointer<RpcExecutor.ExecuteDelegate>(InvokeExecute);
-    public PortableFunctionPointer<RpcExecutor.ExecuteDelegate> CompileExecute()
-    {
-        return InvokeExecuteFunctionPointer;
-    }
-}
-
+// TODO will this still work with commented out?
 // The system that makes the RPC request component transfer
-public class GoInGameRequestSystem : RpcCommandRequestSystem<GoInGameRequest>
-{
-}
+//public class GoInGameRequestSystem : RpcCommandRequestSystem<GoInGameRequest>
+//{
+//}
 
 // When client has a connection with network id, go in game and tell server to also go in game
 [UpdateInGroup(typeof(ClientSimulationSystemGroup))]
@@ -117,7 +97,20 @@ public class GoInGameServerSystem : ComponentSystem
             PostUpdateCommands.AddComponent<NetworkStreamInGame>(reqSrc.SourceConnection);
             UnityEngine.Debug.Log(String.Format("Server setting connection {0} to in game", EntityManager.GetComponentData<NetworkIdComponent>(reqSrc.SourceConnection).Value));
             var ghostCollection = GetSingleton<GhostPrefabCollectionComponent>();
-            var ghostId = NetAgentGhostSerializerCollection.FindGhostType<AgentSnapshotData>();
+
+
+            //var serverPrefabs = EntityManager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs);
+            //for (int ghostId = 0; ghostId < serverPrefabs.Length; ++ghostId)
+            //{
+            //    if (EntityManager.HasComponent<MovableCubeComponent>(serverPrefabs[ghostId].Value))
+            //        prefab = serverPrefabs[ghostId].Value;
+            //}
+
+
+
+	    // old implementation, was deprecated annoyingly
+            //var ghostId = NetAgentGhostSerializerCollection.FindGhostType<AgentSnapshotData>();
+            var ghostId = 0;
             var prefab = EntityManager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs)[ghostId].Value;
             var player = EntityManager.Instantiate(prefab);
 
@@ -140,26 +133,27 @@ public class GoInGameServerSystem : ComponentSystem
 
 
 
+
 //#if (!UNITY_EDITOR)
-            GameObject animate_prefab = Resources.Load<GameObject>("Prefabs/gladiator");
-            GameObject obj = UnityEngine.Object.Instantiate(animate_prefab);
+            //GameObject animate_prefab = Resources.Load<GameObject>("Prefabs/gladiator");
+            //GameObject obj = UnityEngine.Object.Instantiate(animate_prefab);
             // setup pointer to entity from object
-            obj.GetComponent<PlayerMono>().entity = player;
+            //obj.GetComponent<PlayerMono>().entity = player;
             // setup pointers to entities from sword object
-            var swordObj = obj.transform.Find("CharArmature/Pelvis/Ribcage/Chest/Shoulder.R/UpperArm.R/Forearm.R/Hand.R/SwordArmature/Bone/Sword");
-            SwordMono swordMono = swordObj.GetComponent<SwordMono>();
-            swordMono.entity = sword;
-            swordMono.player = player;
-            EntityManager.AddComponentObject(sword, swordMono);
+            //var swordObj = obj.transform.Find("CharArmature/Pelvis/Ribcage/Chest/Shoulder.R/UpperArm.R/Forearm.R/Hand.R/SwordArmature/Bone/Sword");
+            //SwordMono swordMono = swordObj.GetComponent<SwordMono>();
+            //swordMono.entity = sword;
+            //swordMono.player = player;
+            //EntityManager.AddComponentObject(sword, swordMono);
 
-            var shieldObj = obj.transform.Find("CharArmature/Pelvis/Ribcage/Chest/Shoulder.L/UpperArm.L/Forearm.L/ShieldArmature/Bone.001/Shield");
-            ShieldMono shieldMono = shieldObj.GetComponent<ShieldMono>();
-            shieldMono.entity = shield;
-            shieldMono.player = player;
-            EntityManager.AddComponentObject(shield, shieldMono);
+            //var shieldObj = obj.transform.Find("CharArmature/Pelvis/Ribcage/Chest/Shoulder.L/UpperArm.L/Forearm.L/ShieldArmature/Bone.001/Shield");
+            //ShieldMono shieldMono = shieldObj.GetComponent<ShieldMono>();
+            //shieldMono.entity = shield;
+            //shieldMono.player = player;
+            //EntityManager.AddComponentObject(shield, shieldMono);
 
-            obj.transform.localScale *= 0.5f;
-            EntityManager.AddComponentObject(player, obj);
+            //obj.transform.localScale *= 0.5f;
+            //EntityManager.AddComponentObject(player, obj);
             PostUpdateCommands.AddComponent<AnimationInitialized>(player);
 //#endif
 

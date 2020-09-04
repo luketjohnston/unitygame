@@ -3,8 +3,8 @@ using Unity.NetCode;
 
 [GenerateAuthoringComponent]
 public struct Usable : IComponentData {
-  [GhostDefaultField]
+  [GhostField]
   public bool inuse;
-  [GhostDefaultField]
+  [GhostField]
   public bool canuse;
 }
