@@ -114,6 +114,27 @@ public class GoInGameServerSystem : ComponentSystem
             var prefab = EntityManager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs)[ghostId].Value;
             var player = EntityManager.Instantiate(prefab);
 
+            Entity sword = SwordSystem.AddAbility(player, EntityManager, ghostCollection);
+            Entity shield = ShieldSystem.AddAbility(player, EntityManager, ghostCollection);
+
+
+            ghostId = 4;
+            prefab = EntityManager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs)[ghostId].Value;
+            var hurtbox = EntityManager.Instantiate(prefab);
+            EntityManager.SetComponentData(hurtbox, new OwningPlayer {Value = player});
+
+            ghostId = 5;
+            prefab = EntityManager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs)[ghostId].Value;
+            var shieldHitbox = EntityManager.Instantiate(prefab);
+            EntityManager.SetComponentData(shieldHitbox, new OwningPlayer {Value = player});
+            EntityManager.SetComponentData(shieldHitbox, new AssociatedEntity {Value = shield});
+
+            ghostId = 6;
+            prefab = EntityManager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs)[ghostId].Value;
+            var swordHitbox = EntityManager.Instantiate(prefab);
+            EntityManager.SetComponentData(swordHitbox, new OwningPlayer {Value = player});
+            EntityManager.SetComponentData(swordHitbox, new AssociatedEntity {Value = sword});
+
             EntityManager.SetComponentData(player, new AgentComponent { PlayerId = EntityManager.GetComponentData<NetworkIdComponent>(reqSrc.SourceConnection).Value});
 
             InitializeAgent(player);
@@ -128,8 +149,6 @@ public class GoInGameServerSystem : ComponentSystem
             Entity dash2 = DashSystem.AddAbility(player, 1, 1000, 7, new float3(0,0,-1), KeyCode.S, EntityManager, ghostCollection);
             Entity dash3 = DashSystem.AddAbility(player, 1, 1000, 7, new float3(1,0,0), KeyCode.D, EntityManager, ghostCollection);
             Entity dash4 = DashSystem.AddAbility(player, 1, 1000, 7, new float3(-1,0,0), KeyCode.F, EntityManager, ghostCollection);
-            Entity sword = SwordSystem.AddAbility(player, EntityManager, ghostCollection);
-            Entity shield = ShieldSystem.AddAbility(player, EntityManager, ghostCollection);
 
 
 

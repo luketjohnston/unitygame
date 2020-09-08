@@ -35,6 +35,21 @@ public class ShieldSystem : ComponentSystem
          // pass
        }
     });
+
+
+    Entities.ForEach((ref ShieldHitbox hitbox, ref AssociatedEntity shield, ref Rotation rot, ref OwningPlayer player) => {
+      AngleInput angle = EntityManager.GetComponentData<AngleInput>(shield.Value);
+      // just hack to make it match the animation
+      float clampedAngle = Mathf.Clamp(angle.Value, -90, 0) + 15;
+      Rotation playerRot =  EntityManager.GetComponentData<Rotation>(player.Value);
+      rot.Value = playerRot.Value * Quaternion.AngleAxis(clampedAngle, Vector3.up);
+
+
+    });
+    
+      
+
+
   }
 
   public static Entity AddAbility(Entity agent, EntityManager manager, GhostPrefabCollectionComponent ghostCollection) {

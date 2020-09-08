@@ -13,6 +13,7 @@ namespace Assembly_CSharp.Generated
             var ghostCollectionSystem = World.GetOrCreateSystem<GhostCollectionSystem>();
             ghostCollectionSystem.AddSerializer(AgentComponentGhostComponentSerializer.State);
             ghostCollectionSystem.AddSerializer(AngleInputGhostComponentSerializer.State);
+            ghostCollectionSystem.AddSerializer(AssociatedEntityGhostComponentSerializer.State);
             ghostCollectionSystem.AddSerializer(BackwardModifierGhostComponentSerializer.State);
             ghostCollectionSystem.AddSerializer(BusyTimerGhostComponentSerializer.State);
             ghostCollectionSystem.AddSerializer(CanMoveGhostComponentSerializer.State);
