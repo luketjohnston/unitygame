@@ -53,6 +53,10 @@ public class SwordSystem : ComponentSystem
          }
        }
     });
+
+
+
+
   }
 
   public static Entity AddAbility(Entity agent, EntityManager manager, GhostPrefabCollectionComponent ghostCollection) {
@@ -81,6 +85,17 @@ public class SwordSystem : ComponentSystem
     manager.SetComponentData<Sword>(ability, sword);
     manager.SetComponentData<OwningPlayer>(ability, player);
     //manager.SetComponentData<Translation>(ability, trans);
+
+
+
+   // initialize hitboxes
+   ghostId = 6;
+   prefab = manager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs)[ghostId].Value;
+   var swordHitbox = manager.Instantiate(prefab);
+   manager.SetComponentData<OwningPlayer>(swordHitbox, player);
+   manager.SetComponentData<AssociatedEntity>(swordHitbox, new AssociatedEntity {Value = ability});
+   manager.SetComponentData<Damage>(swordHitbox, new Damage {Value = sword.damage});
+   manager.AddBuffer<Hit>(swordHitbox);
 
     return ability;
   }

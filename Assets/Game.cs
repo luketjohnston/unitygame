@@ -122,18 +122,15 @@ public class GoInGameServerSystem : ComponentSystem
             prefab = EntityManager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs)[ghostId].Value;
             var hurtbox = EntityManager.Instantiate(prefab);
             EntityManager.SetComponentData(hurtbox, new OwningPlayer {Value = player});
+            EntityManager.AddBuffer<Hit>(hurtbox);
 
             ghostId = 5;
             prefab = EntityManager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs)[ghostId].Value;
             var shieldHitbox = EntityManager.Instantiate(prefab);
             EntityManager.SetComponentData(shieldHitbox, new OwningPlayer {Value = player});
             EntityManager.SetComponentData(shieldHitbox, new AssociatedEntity {Value = shield});
+            EntityManager.AddBuffer<Hit>(shieldHitbox);
 
-            ghostId = 6;
-            prefab = EntityManager.GetBuffer<GhostPrefabBuffer>(ghostCollection.serverPrefabs)[ghostId].Value;
-            var swordHitbox = EntityManager.Instantiate(prefab);
-            EntityManager.SetComponentData(swordHitbox, new OwningPlayer {Value = player});
-            EntityManager.SetComponentData(swordHitbox, new AssociatedEntity {Value = sword});
 
             EntityManager.SetComponentData(player, new AgentComponent { PlayerId = EntityManager.GetComponentData<NetworkIdComponent>(reqSrc.SourceConnection).Value});
 
@@ -185,6 +182,7 @@ public class GoInGameServerSystem : ComponentSystem
       EntityManager.SetComponentData(player, new GameOrientation {Value = new float2(0,1)});
       EntityManager.SetComponentData(player, new BusyTimer {Value = 0});
       EntityManager.SetComponentData(player, new Health {Value = 100, regen = 2f, max = 100});
+      EntityManager.AddBuffer<Hit>(player);
 
       //EntityManager.Instantiate(PrefabEntities.healthBar);
 

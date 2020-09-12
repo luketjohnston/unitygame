@@ -1,8 +1,8 @@
-using Unity.Entities;
 using Unity.NetCode;
+using Unity.Entities;
 
 [GenerateAuthoringComponent]
-public struct Hurtbox : IComponentData
-{
+public struct Hitbox : IComponentData {
+  [GhostField]
   public Entity hitToProcess;
 }

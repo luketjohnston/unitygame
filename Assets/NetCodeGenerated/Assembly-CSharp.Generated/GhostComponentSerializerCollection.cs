@@ -24,6 +24,7 @@ namespace Assembly_CSharp.Generated
             ghostCollectionSystem.AddSerializer(GameOrientationGhostComponentSerializer.State);
             ghostCollectionSystem.AddSerializer(GamePositionGhostComponentSerializer.State);
             ghostCollectionSystem.AddSerializer(HealthGhostComponentSerializer.State);
+            ghostCollectionSystem.AddSerializer(HitboxGhostComponentSerializer.State);
             ghostCollectionSystem.AddSerializer(LocationInputGhostComponentSerializer.State);
             ghostCollectionSystem.AddSerializer(OrientationInputGhostComponentSerializer.State);
             ghostCollectionSystem.AddSerializer(OwningPlayerGhostComponentSerializer.State);

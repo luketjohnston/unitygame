@@ -120,12 +120,12 @@ public class HealthBarSystem : ComponentSystem
 
     Entities.WithAll<HealthBarComp>().ForEach((ref Translation trans, ref OwningPlayer owner) => {
         var owner_trans = EntityManager.GetComponentData<Translation>(owner.Value);
-        trans.Value = owner_trans.Value + new float3(0, 1.5f, 0);
+        trans.Value = owner_trans.Value + new float3(0, 6.5f, 0);
     });
 
     Entities.WithAll<HealthDisplayComp>().ForEach((ref Translation trans, ref OwningPlayer owner, ref CompositeScale scale) => {
         var owner_trans = EntityManager.GetComponentData<Translation>(owner.Value);
-        trans.Value = owner_trans.Value + new float3(0, 1.5f, 0);
+        trans.Value = owner_trans.Value + new float3(0, 6.5f, 0);
 
         var health = EntityManager.GetComponentData<Health>(owner.Value);
         var healthScale = health.Value / health.max;
