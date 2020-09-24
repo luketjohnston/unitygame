@@ -76,15 +76,17 @@ public class CollisionSystem : JobComponentSystem {
       }
 
       if (hurtboxGroup.HasComponent(entityA) && hitboxGroup.HasComponent(entityB)) {
-        // add hit and hurt to respective buffers
-        hitBufferGroup[entityA].Reinterpret<Entity>().Add(entityB);
-        hitBufferGroup[entityB].Reinterpret<Entity>().Add(entityA);
+        //hitBufferGroup[entityA].Add(new Hit {ent=entityB});
+        // Only add hit to the hitbox (not hurtbox), because hitbox must compute knockback
+        // before adding hit (and knockback) to hurtbox.
+        hitBufferGroup[entityB].Add(new Hit {ent=entityA});
       }
 
       if (hurtboxGroup.HasComponent(entityB) && hitboxGroup.HasComponent(entityA)) {
-        // add hit and hurt to respective buffers
-        hitBufferGroup[entityA].Reinterpret<Entity>().Add(entityB);
-        hitBufferGroup[entityB].Reinterpret<Entity>().Add(entityA);
+        // Only add hit to the hitbox (not hurtbox), because hitbox must compute knockback
+        // before adding hit (and knockback) to hurtbox.
+        hitBufferGroup[entityA].Add(new Hit {ent=entityB});
+        //hitBufferGroup[entityB].Add(new Hit {ent=entityA});
 
         // set indicators both on hurtbox and hitboxes, for which entity hit / was hit.
         //Hurtbox hurtbox = hurtboxGroup[entityB];
@@ -94,6 +96,8 @@ public class CollisionSystem : JobComponentSystem {
         //Hitbox hitbox = hitboxGroup[entityA];
         //hitbox.hitToProcess = entityB;
         //hitboxGroup[entityA] = hitbox;
+
+        // In swordSystem, we process each hit entity, and set corresponding knockback
 
       }
     }

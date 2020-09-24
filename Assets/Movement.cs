@@ -13,7 +13,7 @@ using Unity.Mathematics;
 // prediction though.
 //[UpdateInGroup(typeof(GhostPredictionSystemGroup))]
 [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
-public class UpdateDestinationSystem : ComponentSystem
+public class MoveThingsSystem : ComponentSystem
 {
     protected uint last_processed_tick = 0;
     protected override void OnUpdate()
@@ -89,10 +89,10 @@ public class MoveAgentSystem : ComponentSystem
         busyTimer.Value -= deltaTime;
     });
 
-    Entities.ForEach((ref DestinationComponent dest, ref GamePosition position, ref Speed speed, ref GameOrientation orientation, ref BackwardModifier modifier, ref BusyTimer busyTimer) => 
+    Entities.ForEach((ref DestinationComponent dest, ref GamePosition position, ref Speed speed, ref GameOrientation orientation, ref BusyTimer busyTimer, ref Knockback knockback) => 
     {
 
-       if (!dest.Value.Equals(position.Value) && dest.Valid && busyTimer.Value <= 0) {
+       if (!dest.Value.Equals(position.Value) && dest.Valid && busyTimer.Value <= 0 && !knockback.active) {
          
          float2 deltaPos = dest.Value - position.Value;
 
@@ -111,6 +111,7 @@ public class MoveAgentSystem : ComponentSystem
 
          if (math.length(deltaPos) < speed.Value * deltaTime * mov_mod) {
            position.Value = dest.Value;
+           dest.Valid = false;
          } else {
            deltaPos = speed.Value * deltaTime * math.normalize(deltaPos) * mov_mod;
            position.Value += deltaPos;
@@ -145,7 +146,22 @@ public class MoveAgentSystem : ComponentSystem
         //}
 
     });
+
+    Entities.ForEach((ref GamePosition position, ref Knockback knockback) => {
+      //Debug.Log("in knockback calc 1");
+      if (knockback.active) {
+      //Debug.Log("in knockback if statement");
+        position.Value += knockback.Value.xz;
+        knockback.Value *= 0.1f;
+        //Debug.Log(knockback.Value);
+        knockback.active = math.length(knockback.Value) > 0.1;
+      }
+    });
+
   }
+
+
+
 }
 
 

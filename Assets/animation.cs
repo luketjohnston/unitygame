@@ -35,10 +35,10 @@ public class UpdateAnimationSystem : ComponentSystem {
     Entities.ForEach((Entity ent, ref Translation trans, ref DestinationComponent dest, ref GamePosition position, ref AnimationInitialized anim_init) => {
       GameObject animatingBody = EntityManager.GetComponentObject<GameObject>(ent);
       bool idle = (dest.Value.Equals(position.Value) || !dest.Valid);
-      if (!idle) {
+      //if (!idle) {
         // update animatingbody's position
         animatingBody.transform.localPosition = Utility.f2tov3(position.Value);
-      } 
+      //} 
       animatingBody.GetComponent<Animator>().SetBool("Idle", idle);
     });
 

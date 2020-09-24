@@ -46,12 +46,35 @@ public class SwordSystem : ComponentSystem
          }
 
          if (cooldown.timer > 0 && cooldown.timer < cooldown.duration - stabTime) {
-           Debug.Log("setting inuse to false");
            usable.inuse = false;
            //anim.SetBool("Stabbing", false);
            //anim.SetBool("Idle", true);
          }
        }
+    });
+
+
+
+    Entities.ForEach((Entity ent, DynamicBuffer<Hit> hitBuffer, ref StabHitbox stab, ref Rotation rot, ref Damage damage) => {
+        
+      List<Hit> hitList = new List<Hit>();
+      for (int i = 0; i < hitBuffer.Length; i++) {
+        var hit = hitBuffer[i];
+        hit.knockback = math.rotate(rot.Value, Utility.v3tof3(Vector3.forward));
+        hit.damage = damage.Value;
+        hitBuffer[i] = hit;
+        hitList.Add(hit);
+      }
+
+      for (int i = 0; i < hitList.Count; i++) {
+        var hit = hitList[i];
+        var hurtboxBuffer = EntityManager.GetBuffer<Hit>(hit.ent);
+        hit.ent = ent;
+        hurtboxBuffer.Add(hit);
+      }
+      hitBuffer.Clear();
+
+
     });
 
 
@@ -68,7 +91,7 @@ public class SwordSystem : ComponentSystem
     
     var agentGhostId = manager.GetComponentData<GhostComponent>(agent).ghostId;
 
-    Cooldown cooldown; Usable usable; KeyCodeComp keycode; OwningPlayer player; Sword sword; Translation trans; Scale scale;
+    Cooldown cooldown; Usable usable; KeyCodeComp keycode; OwningPlayer player; Sword sword; 
     cooldown.timer = 0;
     cooldown.duration = 1;
     sword.damage = 10;
@@ -95,9 +118,12 @@ public class SwordSystem : ComponentSystem
    manager.SetComponentData<OwningPlayer>(swordHitbox, player);
    manager.SetComponentData<AssociatedEntity>(swordHitbox, new AssociatedEntity {Value = ability});
    manager.SetComponentData<Damage>(swordHitbox, new Damage {Value = sword.damage});
+   manager.SetComponentData<Disableable>(swordHitbox, new Disableable {disabled = false});
    manager.AddBuffer<Hit>(swordHitbox);
+   var hitboxBuffer = manager.AddBuffer<HitboxElement>(ability).Reinterpret<Entity>();
+   hitboxBuffer.Add(swordHitbox);
 
-    return ability;
+   return ability;
   }
 
 }
@@ -124,6 +150,41 @@ public class SwordUpdateAnimationSystem : ComponentSystem
          }
        }
     });
+
+    //Entities.WithNone<HitboxElement>().ForEach((Entity parent, ref Sword sword) => {
+    //  Debug.Log("in here adding hitboxbuffer");
+    //  var hitboxBuffer = EntityManager.AddBuffer<HitboxElement>(parent).Reinterpret<Entity>();
+    //  Entities.ForEach((Entity hitbox, ref StabHitbox stab, ref AssociatedEntity ent) => {
+    //    if (ent.Value == parent) {
+    //      hitboxBuffer.Add(hitbox);
+    //    }
+    //  });
+    //});
+        
   }
 }
+
+[UpdateInGroup(typeof(ClientSimulationSystemGroup))]
+public class ClientSwordInit : ComponentSystem
+{
+    protected override void OnCreate() {}
+    protected override void OnUpdate()
+    {
+        Entities.WithNone<HitboxElement>().ForEach((Entity ent, ref Sword sword) => {
+          EntityManager.AddBuffer<HitboxElement>(ent);
+        });
+
+        //Debug.LogError("in onpudate in goingamesystem");
+        Entities.WithNone<ClientInit>().ForEach((Entity ent, ref StabHitbox stab, ref AssociatedEntity sword) =>
+        {
+            var buffer = EntityManager.GetBuffer<HitboxElement>(sword.Value).Reinterpret<Entity>();
+            buffer.Add(ent);
+            PostUpdateCommands.AddComponent<ClientInit>(ent);
+        });
+    }
+}
+
+
+
+
 

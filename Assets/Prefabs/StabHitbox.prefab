@@ -20,6 +20,8 @@ GameObject:
   - component: {fileID: -5571135877116396040}
   - component: {fileID: 6793754478632090417}
   - component: {fileID: 2233237753263192851}
+  - component: {fileID: -5067846680731286113}
+  - component: {fileID: -3465290098202018050}
   m_Layer: 0
   m_Name: StabHitbox
   m_TagString: Untagged
@@ -261,10 +263,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c79d771cedb4794bf100ce60df5f764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultGhostMode: 0
+  DefaultGhostMode: 1
   SupportedGhostModes: 3
   OptimizationMode: 0
-  Importance: 1
+  Importance: 2
   prefabId: 7bea9ab2d8e8144c78abbc60212ed7ae
   Name: 
   doNotStrip: 0
@@ -397,3 +399,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitToProcess: {fileID: 0}
+--- !u!114 &-5067846680731286113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5133275774994821937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03947f5f94493463db48b209d1397578, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3465290098202018050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5133275774994821937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e53f57ec55884bed9387da1e1699d9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disabled: 0
